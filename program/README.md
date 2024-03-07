@@ -1,3 +1,3 @@
-# Counter program
+# Counter
 
-Simple counter program as an example.
+Your generated Solana program. Have fun!

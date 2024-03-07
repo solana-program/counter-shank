@@ -8,4 +8,4 @@
 use solana_program::{pubkey, pubkey::Pubkey};
 
 /// `counter` program ID.
-pub const COUNTER_ID: Pubkey = pubkey!("DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1");
+pub const COUNTER_ID: Pubkey = pubkey!("6XNJFurRUiKVTFBaWeh7YMXkQQrZqMepVLYgE7bLzEeJ");
