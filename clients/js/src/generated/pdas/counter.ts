@@ -24,7 +24,7 @@ export async function findCounterPda(
   config: { programAddress?: Address | undefined } = {}
 ): Promise<ProgramDerivedAddress> {
   const {
-    programAddress = '95waYzr7G2pZkfjfucAYZP7JRUNzhN1EdeSXE2oZogRs' as Address<'95waYzr7G2pZkfjfucAYZP7JRUNzhN1EdeSXE2oZogRs'>,
+    programAddress = 'DnrBJ145q8Efod9NS91r1TbxXoT4yPyUhZGhC42eENZZ' as Address<'DnrBJ145q8Efod9NS91r1TbxXoT4yPyUhZGhC42eENZZ'>,
   } = config;
   return getProgramDerivedAddress({
     programAddress,
