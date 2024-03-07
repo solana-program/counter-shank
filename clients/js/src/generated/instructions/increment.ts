@@ -50,7 +50,7 @@ import {
 } from '../shared';
 
 export type IncrementInstruction<
-  TProgram extends string = '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM',
+  TProgram extends string = 'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1',
   TAccountCounter extends string | IAccountMeta<string> = string,
   TAccountAuthority extends string | IAccountMeta<string> = string,
   TRemainingAccounts extends Array<IAccountMeta<string>> = []
@@ -69,7 +69,7 @@ export type IncrementInstruction<
   >;
 
 export type IncrementInstructionWithSigners<
-  TProgram extends string = '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM',
+  TProgram extends string = 'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1',
   TAccountCounter extends string | IAccountMeta<string> = string,
   TAccountAuthority extends string | IAccountMeta<string> = string,
   TRemainingAccounts extends Array<IAccountMeta<string>> = []
@@ -149,7 +149,7 @@ export type IncrementAsyncInputWithSigners<
 export async function getIncrementInstructionAsync<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM'
+  TProgram extends string = 'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1'
 >(
   input: IncrementAsyncInputWithSigners<TAccountCounter, TAccountAuthority>
 ): Promise<
@@ -158,20 +158,20 @@ export async function getIncrementInstructionAsync<
 export async function getIncrementInstructionAsync<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM'
+  TProgram extends string = 'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1'
 >(
   input: IncrementAsyncInput<TAccountCounter, TAccountAuthority>
 ): Promise<IncrementInstruction<TProgram, TAccountCounter, TAccountAuthority>>;
 export async function getIncrementInstructionAsync<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM'
+  TProgram extends string = 'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1'
 >(
   input: IncrementAsyncInput<TAccountCounter, TAccountAuthority>
 ): Promise<IInstruction> {
   // Program address.
   const programAddress =
-    '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM' as Address<'8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM'>;
+    'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1' as Address<'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1'>;
 
   // Original accounts.
   type AccountMetas = Parameters<
@@ -237,7 +237,7 @@ export type IncrementInputWithSigners<
 export function getIncrementInstruction<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM'
+  TProgram extends string = 'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1'
 >(
   input: IncrementInputWithSigners<TAccountCounter, TAccountAuthority>
 ): IncrementInstructionWithSigners<
@@ -248,18 +248,18 @@ export function getIncrementInstruction<
 export function getIncrementInstruction<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM'
+  TProgram extends string = 'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1'
 >(
   input: IncrementInput<TAccountCounter, TAccountAuthority>
 ): IncrementInstruction<TProgram, TAccountCounter, TAccountAuthority>;
 export function getIncrementInstruction<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM'
+  TProgram extends string = 'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1'
 >(input: IncrementInput<TAccountCounter, TAccountAuthority>): IInstruction {
   // Program address.
   const programAddress =
-    '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM' as Address<'8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM'>;
+    'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1' as Address<'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1'>;
 
   // Original accounts.
   type AccountMetas = Parameters<
@@ -294,7 +294,7 @@ export function getIncrementInstruction<
 }
 
 export function getIncrementInstructionRaw<
-  TProgram extends string = '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM',
+  TProgram extends string = 'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1',
   TAccountCounter extends string | IAccountMeta<string> = string,
   TAccountAuthority extends string | IAccountMeta<string> = string,
   TRemainingAccounts extends Array<IAccountMeta<string>> = []
@@ -308,7 +308,7 @@ export function getIncrementInstructionRaw<
       : TAccountAuthority;
   },
   args: IncrementInstructionDataArgs,
-  programAddress: Address<TProgram> = '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM' as Address<TProgram>,
+  programAddress: Address<TProgram> = 'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1' as Address<TProgram>,
   remainingAccounts?: TRemainingAccounts
 ) {
   return {
@@ -328,7 +328,7 @@ export function getIncrementInstructionRaw<
 }
 
 export type ParsedIncrementInstruction<
-  TProgram extends string = '8fSc6VKQoLisEri26TasWGRL391YLSLzDmoZLUNt52wM',
+  TProgram extends string = 'DedZsfsH9NkuANu83KcjcLzmpyREUY9ZLoXa4ea1NwM1',
   TAccountMetas extends readonly IAccountMeta[] = readonly IAccountMeta[]
 > = {
   programAddress: Address<TProgram>;
