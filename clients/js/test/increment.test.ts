@@ -80,7 +80,7 @@ test('it cannot increment a counter that does not exist', async (t) => {
   );
   t.regex(
     error.data.logs.join('\n'),
-    /Account "counter" \[.+\] expected program owner \[AJ3rnAi5yDDjCX3tUkpPos5zqye4ebL5x9qjtDGjgHeR\], got \[11111111111111111111111111111111\]/
+    /Account "counter" \[.+\] expected program owner \[9DDVB4pY1Ng1Bxfat4QmkKm1vxvZcPNkg8xfNX19BAEW\], got \[11111111111111111111111111111111\]/
   );
 });
 
