@@ -22,10 +22,10 @@ import { memcmp } from '../shared';
 import { Key, getKeyEncoder } from '../types';
 
 export const COUNTER_PROGRAM_ADDRESS =
-  '6XNJFurRUiKVTFBaWeh7YMXkQQrZqMepVLYgE7bLzEeJ' as Address<'6XNJFurRUiKVTFBaWeh7YMXkQQrZqMepVLYgE7bLzEeJ'>;
+  'A8zRQrpEmXSGiSjgcTyKfGirQDJ429RPfS4Hrqc1pavB' as Address<'A8zRQrpEmXSGiSjgcTyKfGirQDJ429RPfS4Hrqc1pavB'>;
 
 export type CounterProgram =
-  Program<'6XNJFurRUiKVTFBaWeh7YMXkQQrZqMepVLYgE7bLzEeJ'> &
+  Program<'A8zRQrpEmXSGiSjgcTyKfGirQDJ429RPfS4Hrqc1pavB'> &
     ProgramWithErrors<CounterProgramErrorCode, CounterProgramError>;
 
 export function getCounterProgram(): CounterProgram {
@@ -76,7 +76,7 @@ export function identifyCounterInstruction(
 }
 
 export type ParsedCounterInstruction<
-  TProgram extends string = '6XNJFurRUiKVTFBaWeh7YMXkQQrZqMepVLYgE7bLzEeJ'
+  TProgram extends string = 'A8zRQrpEmXSGiSjgcTyKfGirQDJ429RPfS4Hrqc1pavB'
 > =
   | ({
       instructionType: CounterInstruction.Create;
