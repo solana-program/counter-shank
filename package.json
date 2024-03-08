@@ -9,7 +9,8 @@
     "generate:idls": "zx ./scripts/generate-idls.mjs",
     "generate": "pnpm generate:idls && pnpm generate:clients",
     "generate:clients": "zx ./scripts/generate-clients.mjs",
-    "validator": "zx ./scripts/start-validator.mjs",
+    "validator:start": "zx ./scripts/start-validator.mjs",
+    "validator:restart": "pnpm validator:start --restart",
     "validator:stop": "zx ./scripts/stop-validator.mjs",
     "clients:js:test": "zx ./scripts/client/test-js.mjs",
     "clients:rust:test": "zx ./scripts/client/test-rust.mjs"

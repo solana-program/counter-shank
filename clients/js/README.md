@@ -19,7 +19,7 @@ Alternatively, you can go into the client directory and run the tests directly.
 ```sh
 # Build your programs and start the validator.
 pnpm programs:build
-pnpm validator
+pnpm validator:restart
 
 # Go into the client directory and run the tests.
 cd clients/js
