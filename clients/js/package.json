@@ -1,7 +1,7 @@
 {
   "name": "@solana-program/counter",
   "version": "0.1.0",
-  "description": "Counters on-chain",
+  "description": "JavaScript client for the Counter program",
   "sideEffects": false,
   "module": "dist/src/index.mjs",
   "main": "dist/src/index.js",
