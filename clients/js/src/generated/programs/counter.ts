@@ -76,7 +76,7 @@ export function identifyCounterInstruction(
 }
 
 export type ParsedCounterInstruction<
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 > =
   | ({
       instructionType: CounterInstruction.Create;

@@ -47,7 +47,7 @@ export type IncrementInstruction<
   TProgram extends string = 'CounterProgram111111111111111111111111111111',
   TAccountCounter extends string | IAccountMeta<string> = string,
   TAccountAuthority extends string | IAccountMeta<string> = string,
-  TRemainingAccounts extends Array<IAccountMeta<string>> = []
+  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
   IInstructionWithAccounts<
@@ -58,7 +58,7 @@ export type IncrementInstruction<
       TAccountAuthority extends string
         ? ReadonlySignerAccount<TAccountAuthority>
         : TAccountAuthority,
-      ...TRemainingAccounts
+      ...TRemainingAccounts,
     ]
   >;
 
@@ -66,7 +66,7 @@ export type IncrementInstructionWithSigners<
   TProgram extends string = 'CounterProgram111111111111111111111111111111',
   TAccountCounter extends string | IAccountMeta<string> = string,
   TAccountAuthority extends string | IAccountMeta<string> = string,
-  TRemainingAccounts extends Array<IAccountMeta<string>> = []
+  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
   IInstructionWithAccounts<
@@ -78,7 +78,7 @@ export type IncrementInstructionWithSigners<
         ? ReadonlySignerAccount<TAccountAuthority> &
             IAccountSignerMeta<TAccountAuthority>
         : TAccountAuthority,
-      ...TRemainingAccounts
+      ...TRemainingAccounts,
     ]
   >;
 
@@ -120,7 +120,7 @@ export function getIncrementInstructionDataCodec(): Codec<
 
 export type IncrementAsyncInput<
   TAccountCounter extends string,
-  TAccountAuthority extends string
+  TAccountAuthority extends string,
 > = {
   /** The program derived address of the counter account to increment (seeds: ['counter', authority]) */
   counter?: Address<TAccountCounter>;
@@ -131,7 +131,7 @@ export type IncrementAsyncInput<
 
 export type IncrementAsyncInputWithSigners<
   TAccountCounter extends string,
-  TAccountAuthority extends string
+  TAccountAuthority extends string,
 > = {
   /** The program derived address of the counter account to increment (seeds: ['counter', authority]) */
   counter?: Address<TAccountCounter>;
@@ -143,7 +143,7 @@ export type IncrementAsyncInputWithSigners<
 export async function getIncrementInstructionAsync<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: IncrementAsyncInputWithSigners<TAccountCounter, TAccountAuthority>
 ): Promise<
@@ -152,14 +152,14 @@ export async function getIncrementInstructionAsync<
 export async function getIncrementInstructionAsync<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: IncrementAsyncInput<TAccountCounter, TAccountAuthority>
 ): Promise<IncrementInstruction<TProgram, TAccountCounter, TAccountAuthority>>;
 export async function getIncrementInstructionAsync<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: IncrementAsyncInput<TAccountCounter, TAccountAuthority>
 ): Promise<IInstruction> {
@@ -208,7 +208,7 @@ export async function getIncrementInstructionAsync<
 
 export type IncrementInput<
   TAccountCounter extends string,
-  TAccountAuthority extends string
+  TAccountAuthority extends string,
 > = {
   /** The program derived address of the counter account to increment (seeds: ['counter', authority]) */
   counter: Address<TAccountCounter>;
@@ -219,7 +219,7 @@ export type IncrementInput<
 
 export type IncrementInputWithSigners<
   TAccountCounter extends string,
-  TAccountAuthority extends string
+  TAccountAuthority extends string,
 > = {
   /** The program derived address of the counter account to increment (seeds: ['counter', authority]) */
   counter: Address<TAccountCounter>;
@@ -231,7 +231,7 @@ export type IncrementInputWithSigners<
 export function getIncrementInstruction<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: IncrementInputWithSigners<TAccountCounter, TAccountAuthority>
 ): IncrementInstructionWithSigners<
@@ -242,14 +242,14 @@ export function getIncrementInstruction<
 export function getIncrementInstruction<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: IncrementInput<TAccountCounter, TAccountAuthority>
 ): IncrementInstruction<TProgram, TAccountCounter, TAccountAuthority>;
 export function getIncrementInstruction<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(input: IncrementInput<TAccountCounter, TAccountAuthority>): IInstruction {
   // Program address.
   const programAddress =
@@ -291,7 +291,7 @@ export function getIncrementInstructionRaw<
   TProgram extends string = 'CounterProgram111111111111111111111111111111',
   TAccountCounter extends string | IAccountMeta<string> = string,
   TAccountAuthority extends string | IAccountMeta<string> = string,
-  TRemainingAccounts extends Array<IAccountMeta<string>> = []
+  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
 >(
   accounts: {
     counter: TAccountCounter extends string
@@ -323,7 +323,7 @@ export function getIncrementInstructionRaw<
 
 export type ParsedIncrementInstruction<
   TProgram extends string = 'CounterProgram111111111111111111111111111111',
-  TAccountMetas extends readonly IAccountMeta[] = readonly IAccountMeta[]
+  TAccountMetas extends readonly IAccountMeta[] = readonly IAccountMeta[],
 > = {
   programAddress: Address<TProgram>;
   accounts: {
@@ -337,7 +337,7 @@ export type ParsedIncrementInstruction<
 
 export function parseIncrementInstruction<
   TProgram extends string,
-  TAccountMetas extends readonly IAccountMeta[]
+  TAccountMetas extends readonly IAccountMeta[],
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &

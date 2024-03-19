@@ -50,7 +50,7 @@ export type CreateInstruction<
   TAccountSystemProgram extends
     | string
     | IAccountMeta<string> = '11111111111111111111111111111111',
-  TRemainingAccounts extends Array<IAccountMeta<string>> = []
+  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
   IInstructionWithAccounts<
@@ -67,7 +67,7 @@ export type CreateInstruction<
       TAccountSystemProgram extends string
         ? ReadonlyAccount<TAccountSystemProgram>
         : TAccountSystemProgram,
-      ...TRemainingAccounts
+      ...TRemainingAccounts,
     ]
   >;
 
@@ -79,7 +79,7 @@ export type CreateInstructionWithSigners<
   TAccountSystemProgram extends
     | string
     | IAccountMeta<string> = '11111111111111111111111111111111',
-  TRemainingAccounts extends Array<IAccountMeta<string>> = []
+  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
   IInstructionWithAccounts<
@@ -98,7 +98,7 @@ export type CreateInstructionWithSigners<
       TAccountSystemProgram extends string
         ? ReadonlyAccount<TAccountSystemProgram>
         : TAccountSystemProgram,
-      ...TRemainingAccounts
+      ...TRemainingAccounts,
     ]
   >;
 
@@ -131,7 +131,7 @@ export type CreateAsyncInput<
   TAccountCounter extends string,
   TAccountAuthority extends string,
   TAccountPayer extends string,
-  TAccountSystemProgram extends string
+  TAccountSystemProgram extends string,
 > = {
   /** The program derived address of the counter account to create (seeds: ['counter', authority]) */
   counter?: Address<TAccountCounter>;
@@ -147,7 +147,7 @@ export type CreateAsyncInputWithSigners<
   TAccountCounter extends string,
   TAccountAuthority extends string,
   TAccountPayer extends string,
-  TAccountSystemProgram extends string
+  TAccountSystemProgram extends string,
 > = {
   /** The program derived address of the counter account to create (seeds: ['counter', authority]) */
   counter?: Address<TAccountCounter>;
@@ -164,7 +164,7 @@ export async function getCreateInstructionAsync<
   TAccountAuthority extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: CreateAsyncInputWithSigners<
     TAccountCounter,
@@ -187,7 +187,7 @@ export async function getCreateInstructionAsync<
   TAccountAuthority extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: CreateAsyncInput<
     TAccountCounter,
@@ -210,7 +210,7 @@ export async function getCreateInstructionAsync<
   TAccountAuthority extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: CreateAsyncInput<
     TAccountCounter,
@@ -279,7 +279,7 @@ export type CreateInput<
   TAccountCounter extends string,
   TAccountAuthority extends string,
   TAccountPayer extends string,
-  TAccountSystemProgram extends string
+  TAccountSystemProgram extends string,
 > = {
   /** The program derived address of the counter account to create (seeds: ['counter', authority]) */
   counter: Address<TAccountCounter>;
@@ -295,7 +295,7 @@ export type CreateInputWithSigners<
   TAccountCounter extends string,
   TAccountAuthority extends string,
   TAccountPayer extends string,
-  TAccountSystemProgram extends string
+  TAccountSystemProgram extends string,
 > = {
   /** The program derived address of the counter account to create (seeds: ['counter', authority]) */
   counter: Address<TAccountCounter>;
@@ -312,7 +312,7 @@ export function getCreateInstruction<
   TAccountAuthority extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: CreateInputWithSigners<
     TAccountCounter,
@@ -333,7 +333,7 @@ export function getCreateInstruction<
   TAccountAuthority extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: CreateInput<
     TAccountCounter,
@@ -354,7 +354,7 @@ export function getCreateInstruction<
   TAccountAuthority extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111'
+  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: CreateInput<
     TAccountCounter,
@@ -422,7 +422,7 @@ export function getCreateInstructionRaw<
   TAccountSystemProgram extends
     | string
     | IAccountMeta<string> = '11111111111111111111111111111111',
-  TRemainingAccounts extends Array<IAccountMeta<string>> = []
+  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
 >(
   accounts: {
     counter: TAccountCounter extends string
@@ -467,7 +467,7 @@ export function getCreateInstructionRaw<
 
 export type ParsedCreateInstruction<
   TProgram extends string = 'CounterProgram111111111111111111111111111111',
-  TAccountMetas extends readonly IAccountMeta[] = readonly IAccountMeta[]
+  TAccountMetas extends readonly IAccountMeta[] = readonly IAccountMeta[],
 > = {
   programAddress: Address<TProgram>;
   accounts: {
@@ -485,7 +485,7 @@ export type ParsedCreateInstruction<
 
 export function parseCreateInstruction<
   TProgram extends string,
-  TAccountMetas extends readonly IAccountMeta[]
+  TAccountMetas extends readonly IAccountMeta[],
 >(
   instruction: IInstruction<TProgram> &
     IInstructionWithAccounts<TAccountMetas> &
