@@ -26,7 +26,6 @@ import {
   none,
 } from '@solana/codecs';
 import {
-  AccountRole,
   IAccountMeta,
   IInstruction,
   IInstructionWithAccounts,
@@ -36,37 +35,18 @@ import {
 } from '@solana/instructions';
 import { IAccountSignerMeta, TransactionSigner } from '@solana/signers';
 import { findCounterPda } from '../pdas';
+import { COUNTER_PROGRAM_ADDRESS } from '../programs';
 import {
   ResolvedAccount,
-  accountMetaWithDefault,
   expectAddress,
-  getAccountMetasWithSigners,
+  getAccountMetaFactory,
 } from '../shared';
 
 export type IncrementInstruction<
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
+  TProgram extends string = typeof COUNTER_PROGRAM_ADDRESS,
   TAccountCounter extends string | IAccountMeta<string> = string,
   TAccountAuthority extends string | IAccountMeta<string> = string,
-  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
-> = IInstruction<TProgram> &
-  IInstructionWithData<Uint8Array> &
-  IInstructionWithAccounts<
-    [
-      TAccountCounter extends string
-        ? WritableAccount<TAccountCounter>
-        : TAccountCounter,
-      TAccountAuthority extends string
-        ? ReadonlySignerAccount<TAccountAuthority>
-        : TAccountAuthority,
-      ...TRemainingAccounts,
-    ]
-  >;
-
-export type IncrementInstructionWithSigners<
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
-  TAccountCounter extends string | IAccountMeta<string> = string,
-  TAccountAuthority extends string | IAccountMeta<string> = string,
-  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
+  TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
   IInstructionWithAccounts<
@@ -119,19 +99,8 @@ export function getIncrementInstructionDataCodec(): Codec<
 }
 
 export type IncrementAsyncInput<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-> = {
-  /** The program derived address of the counter account to increment (seeds: ['counter', authority]) */
-  counter?: Address<TAccountCounter>;
-  /** The authority of the counter */
-  authority: Address<TAccountAuthority>;
-  amount?: IncrementInstructionDataArgs['amount'];
-};
-
-export type IncrementAsyncInputWithSigners<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
+  TAccountCounter extends string = string,
+  TAccountAuthority extends string = string,
 > = {
   /** The program derived address of the counter account to increment (seeds: ['counter', authority]) */
   counter?: Address<TAccountCounter>;
@@ -143,42 +112,27 @@ export type IncrementAsyncInputWithSigners<
 export async function getIncrementInstructionAsync<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
-  input: IncrementAsyncInputWithSigners<TAccountCounter, TAccountAuthority>
+  input: IncrementAsyncInput<TAccountCounter, TAccountAuthority>
 ): Promise<
-  IncrementInstructionWithSigners<TProgram, TAccountCounter, TAccountAuthority>
->;
-export async function getIncrementInstructionAsync<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
->(
-  input: IncrementAsyncInput<TAccountCounter, TAccountAuthority>
-): Promise<IncrementInstruction<TProgram, TAccountCounter, TAccountAuthority>>;
-export async function getIncrementInstructionAsync<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
->(
-  input: IncrementAsyncInput<TAccountCounter, TAccountAuthority>
-): Promise<IInstruction> {
+  IncrementInstruction<
+    typeof COUNTER_PROGRAM_ADDRESS,
+    TAccountCounter,
+    TAccountAuthority
+  >
+> {
   // Program address.
-  const programAddress =
-    'CounterProgram111111111111111111111111111111' as Address<'CounterProgram111111111111111111111111111111'>;
+  const programAddress = COUNTER_PROGRAM_ADDRESS;
 
   // Original accounts.
-  type AccountMetas = Parameters<
-    typeof getIncrementInstructionRaw<
-      TProgram,
-      TAccountCounter,
-      TAccountAuthority
-    >
-  >[0];
-  const accounts: Record<keyof AccountMetas, ResolvedAccount> = {
+  const originalAccounts = {
     counter: { value: input.counter ?? null, isWritable: true },
     authority: { value: input.authority ?? null, isWritable: false },
   };
+  const accounts = originalAccounts as Record<
+    keyof typeof originalAccounts,
+    ResolvedAccount
+  >;
 
   // Original args.
   const args = { ...input };
@@ -190,36 +144,28 @@ export async function getIncrementInstructionAsync<
     });
   }
 
-  // Get account metas and signers.
-  const accountMetas = getAccountMetasWithSigners(
-    accounts,
-    'programId',
-    programAddress
-  );
-
-  const instruction = getIncrementInstructionRaw(
-    accountMetas as Record<keyof AccountMetas, IAccountMeta>,
-    args as IncrementInstructionDataArgs,
-    programAddress
-  );
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const instruction = {
+    accounts: [
+      getAccountMeta(accounts.counter),
+      getAccountMeta(accounts.authority),
+    ],
+    programAddress,
+    data: getIncrementInstructionDataEncoder().encode(
+      args as IncrementInstructionDataArgs
+    ),
+  } as IncrementInstruction<
+    typeof COUNTER_PROGRAM_ADDRESS,
+    TAccountCounter,
+    TAccountAuthority
+  >;
 
   return instruction;
 }
 
 export type IncrementInput<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-> = {
-  /** The program derived address of the counter account to increment (seeds: ['counter', authority]) */
-  counter: Address<TAccountCounter>;
-  /** The authority of the counter */
-  authority: Address<TAccountAuthority>;
-  amount?: IncrementInstructionDataArgs['amount'];
-};
-
-export type IncrementInputWithSigners<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
+  TAccountCounter extends string = string,
+  TAccountAuthority extends string = string,
 > = {
   /** The program derived address of the counter account to increment (seeds: ['counter', authority]) */
   counter: Address<TAccountCounter>;
@@ -231,98 +177,50 @@ export type IncrementInputWithSigners<
 export function getIncrementInstruction<
   TAccountCounter extends string,
   TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
->(
-  input: IncrementInputWithSigners<TAccountCounter, TAccountAuthority>
-): IncrementInstructionWithSigners<
-  TProgram,
-  TAccountCounter,
-  TAccountAuthority
->;
-export function getIncrementInstruction<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: IncrementInput<TAccountCounter, TAccountAuthority>
-): IncrementInstruction<TProgram, TAccountCounter, TAccountAuthority>;
-export function getIncrementInstruction<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
->(input: IncrementInput<TAccountCounter, TAccountAuthority>): IInstruction {
+): IncrementInstruction<
+  typeof COUNTER_PROGRAM_ADDRESS,
+  TAccountCounter,
+  TAccountAuthority
+> {
   // Program address.
-  const programAddress =
-    'CounterProgram111111111111111111111111111111' as Address<'CounterProgram111111111111111111111111111111'>;
+  const programAddress = COUNTER_PROGRAM_ADDRESS;
 
   // Original accounts.
-  type AccountMetas = Parameters<
-    typeof getIncrementInstructionRaw<
-      TProgram,
-      TAccountCounter,
-      TAccountAuthority
-    >
-  >[0];
-  const accounts: Record<keyof AccountMetas, ResolvedAccount> = {
+  const originalAccounts = {
     counter: { value: input.counter ?? null, isWritable: true },
     authority: { value: input.authority ?? null, isWritable: false },
   };
+  const accounts = originalAccounts as Record<
+    keyof typeof originalAccounts,
+    ResolvedAccount
+  >;
 
   // Original args.
   const args = { ...input };
 
-  // Get account metas and signers.
-  const accountMetas = getAccountMetasWithSigners(
-    accounts,
-    'programId',
-    programAddress
-  );
-
-  const instruction = getIncrementInstructionRaw(
-    accountMetas as Record<keyof AccountMetas, IAccountMeta>,
-    args as IncrementInstructionDataArgs,
-    programAddress
-  );
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const instruction = {
+    accounts: [
+      getAccountMeta(accounts.counter),
+      getAccountMeta(accounts.authority),
+    ],
+    programAddress,
+    data: getIncrementInstructionDataEncoder().encode(
+      args as IncrementInstructionDataArgs
+    ),
+  } as IncrementInstruction<
+    typeof COUNTER_PROGRAM_ADDRESS,
+    TAccountCounter,
+    TAccountAuthority
+  >;
 
   return instruction;
 }
 
-export function getIncrementInstructionRaw<
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
-  TAccountCounter extends string | IAccountMeta<string> = string,
-  TAccountAuthority extends string | IAccountMeta<string> = string,
-  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
->(
-  accounts: {
-    counter: TAccountCounter extends string
-      ? Address<TAccountCounter>
-      : TAccountCounter;
-    authority: TAccountAuthority extends string
-      ? Address<TAccountAuthority>
-      : TAccountAuthority;
-  },
-  args: IncrementInstructionDataArgs,
-  programAddress: Address<TProgram> = 'CounterProgram111111111111111111111111111111' as Address<TProgram>,
-  remainingAccounts?: TRemainingAccounts
-) {
-  return {
-    accounts: [
-      accountMetaWithDefault(accounts.counter, AccountRole.WRITABLE),
-      accountMetaWithDefault(accounts.authority, AccountRole.READONLY_SIGNER),
-      ...(remainingAccounts ?? []),
-    ],
-    data: getIncrementInstructionDataEncoder().encode(args),
-    programAddress,
-  } as IncrementInstruction<
-    TProgram,
-    TAccountCounter,
-    TAccountAuthority,
-    TRemainingAccounts
-  >;
-}
-
 export type ParsedIncrementInstruction<
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
+  TProgram extends string = typeof COUNTER_PROGRAM_ADDRESS,
   TAccountMetas extends readonly IAccountMeta[] = readonly IAccountMeta[],
 > = {
   programAddress: Address<TProgram>;

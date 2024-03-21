@@ -9,14 +9,14 @@ devDependencies:
     specifier: ^2.2.5
     version: 2.2.5
   '@metaplex-foundation/kinobi':
-    specifier: ^0.17.10
-    version: 0.17.10(fastestsmallesttextencoderdecoder@1.0.22)
+    specifier: ^0.18.0
+    version: 0.18.0(fastestsmallesttextencoderdecoder@1.0.22)
   '@metaplex-foundation/shank-js':
     specifier: ^0.1.7
     version: 0.1.7
   typescript:
     specifier: ^5.4.2
-    version: 5.4.2
+    version: 5.4.3
   zx:
     specifier: ^7.2.3
     version: 7.2.3
@@ -27,8 +27,8 @@ packages:
     resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
     dev: true
 
-  /@metaplex-foundation/kinobi@0.17.10(fastestsmallesttextencoderdecoder@1.0.22):
-    resolution: {integrity: sha512-gp0Amyv84pqJS/whHQNyNm1ef0wva0x6uC+2ca+N/6kUgXFGevaP0pJrX/a9E9ekV026mF5XbjMJJ91Eceevrg==}
+  /@metaplex-foundation/kinobi@0.18.0(fastestsmallesttextencoderdecoder@1.0.22):
+    resolution: {integrity: sha512-iuCUnhCMtm8ixocat5XWAoLFOBOBHhrOS2dulSRUWoLXwtOX8Pnu0wEI0OINN/c/V41Q9kuYXxhlgWh63qg0Zg==}
     dependencies:
       '@noble/hashes': 1.4.0
       '@prettier/sync': 0.5.1(prettier@3.2.5)
@@ -656,8 +656,8 @@ packages:
     resolution: {integrity: sha512-y/mWCZinnvxjTKYhJ+pYxwD0mRLVvOtdS2Awbgxln6iEnt4rk0yBxeSBHkGJcPucRiG0e55mwWp+g/05rsrd6w==}
     dev: true
 
-  /typescript@5.4.2:
-    resolution: {integrity: sha512-+2/g0Fds1ERlP6JsakQQDXjZdZMM+rqpamFZJEKh4kwTIn3iDkgKtby0CeNd5ATNZ4Ry1ax15TMx0W2V+miizQ==}
+  /typescript@5.4.3:
+    resolution: {integrity: sha512-KrPd3PKaCLr78MalgiwJnA25Nm8HAmdwN3mYUYZgG/wizIo9EainNVQI9/yDavtVFRN2h3k8uf3GLHuhDMgEHg==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true

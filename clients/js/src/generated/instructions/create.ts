@@ -20,7 +20,6 @@ import {
   mapEncoder,
 } from '@solana/codecs';
 import {
-  AccountRole,
   IAccountMeta,
   IInstruction,
   IInstructionWithAccounts,
@@ -33,53 +32,24 @@ import {
 import { IAccountSignerMeta, TransactionSigner } from '@solana/signers';
 import { getCounterSize } from '../accounts';
 import { findCounterPda } from '../pdas';
+import { COUNTER_PROGRAM_ADDRESS } from '../programs';
 import {
   IInstructionWithByteDelta,
   ResolvedAccount,
-  accountMetaWithDefault,
   expectAddress,
   expectSome,
-  getAccountMetasWithSigners,
+  getAccountMetaFactory,
 } from '../shared';
 
 export type CreateInstruction<
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
+  TProgram extends string = typeof COUNTER_PROGRAM_ADDRESS,
   TAccountCounter extends string | IAccountMeta<string> = string,
   TAccountAuthority extends string | IAccountMeta<string> = string,
   TAccountPayer extends string | IAccountMeta<string> = string,
   TAccountSystemProgram extends
     | string
     | IAccountMeta<string> = '11111111111111111111111111111111',
-  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
-> = IInstruction<TProgram> &
-  IInstructionWithData<Uint8Array> &
-  IInstructionWithAccounts<
-    [
-      TAccountCounter extends string
-        ? WritableAccount<TAccountCounter>
-        : TAccountCounter,
-      TAccountAuthority extends string
-        ? ReadonlySignerAccount<TAccountAuthority>
-        : TAccountAuthority,
-      TAccountPayer extends string
-        ? WritableSignerAccount<TAccountPayer>
-        : TAccountPayer,
-      TAccountSystemProgram extends string
-        ? ReadonlyAccount<TAccountSystemProgram>
-        : TAccountSystemProgram,
-      ...TRemainingAccounts,
-    ]
-  >;
-
-export type CreateInstructionWithSigners<
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
-  TAccountCounter extends string | IAccountMeta<string> = string,
-  TAccountAuthority extends string | IAccountMeta<string> = string,
-  TAccountPayer extends string | IAccountMeta<string> = string,
-  TAccountSystemProgram extends
-    | string
-    | IAccountMeta<string> = '11111111111111111111111111111111',
-  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
+  TRemainingAccounts extends readonly IAccountMeta<string>[] = [],
 > = IInstruction<TProgram> &
   IInstructionWithData<Uint8Array> &
   IInstructionWithAccounts<
@@ -128,26 +98,10 @@ export function getCreateInstructionDataCodec(): Codec<
 }
 
 export type CreateAsyncInput<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TAccountPayer extends string,
-  TAccountSystemProgram extends string,
-> = {
-  /** The program derived address of the counter account to create (seeds: ['counter', authority]) */
-  counter?: Address<TAccountCounter>;
-  /** The authority of the counter */
-  authority: Address<TAccountAuthority>;
-  /** The account paying for the storage fees */
-  payer?: Address<TAccountPayer>;
-  /** The system program */
-  systemProgram?: Address<TAccountSystemProgram>;
-};
-
-export type CreateAsyncInputWithSigners<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TAccountPayer extends string,
-  TAccountSystemProgram extends string,
+  TAccountCounter extends string = string,
+  TAccountAuthority extends string = string,
+  TAccountPayer extends string = string,
+  TAccountSystemProgram extends string = string,
 > = {
   /** The program derived address of the counter account to create (seeds: ['counter', authority]) */
   counter?: Address<TAccountCounter>;
@@ -164,30 +118,6 @@ export async function getCreateInstructionAsync<
   TAccountAuthority extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
->(
-  input: CreateAsyncInputWithSigners<
-    TAccountCounter,
-    TAccountAuthority,
-    TAccountPayer,
-    TAccountSystemProgram
-  >
-): Promise<
-  CreateInstructionWithSigners<
-    TProgram,
-    TAccountCounter,
-    TAccountAuthority,
-    TAccountPayer,
-    TAccountSystemProgram
-  > &
-    IInstructionWithByteDelta
->;
-export async function getCreateInstructionAsync<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TAccountPayer extends string,
-  TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: CreateAsyncInput<
     TAccountCounter,
@@ -197,48 +127,28 @@ export async function getCreateInstructionAsync<
   >
 ): Promise<
   CreateInstruction<
-    TProgram,
+    typeof COUNTER_PROGRAM_ADDRESS,
     TAccountCounter,
     TAccountAuthority,
     TAccountPayer,
     TAccountSystemProgram
   > &
     IInstructionWithByteDelta
->;
-export async function getCreateInstructionAsync<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TAccountPayer extends string,
-  TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
->(
-  input: CreateAsyncInput<
-    TAccountCounter,
-    TAccountAuthority,
-    TAccountPayer,
-    TAccountSystemProgram
-  >
-): Promise<IInstruction & IInstructionWithByteDelta> {
+> {
   // Program address.
-  const programAddress =
-    'CounterProgram111111111111111111111111111111' as Address<'CounterProgram111111111111111111111111111111'>;
+  const programAddress = COUNTER_PROGRAM_ADDRESS;
 
   // Original accounts.
-  type AccountMetas = Parameters<
-    typeof getCreateInstructionRaw<
-      TProgram,
-      TAccountCounter,
-      TAccountAuthority,
-      TAccountPayer,
-      TAccountSystemProgram
-    >
-  >[0];
-  const accounts: Record<keyof AccountMetas, ResolvedAccount> = {
+  const originalAccounts = {
     counter: { value: input.counter ?? null, isWritable: true },
     authority: { value: input.authority ?? null, isWritable: false },
     payer: { value: input.payer ?? null, isWritable: true },
     systemProgram: { value: input.systemProgram ?? null, isWritable: false },
   };
+  const accounts = originalAccounts as Record<
+    keyof typeof originalAccounts,
+    ResolvedAccount
+  >;
 
   // Resolve default values.
   if (!accounts.counter.value) {
@@ -260,42 +170,32 @@ export async function getCreateInstructionAsync<
     0
   );
 
-  // Get account metas and signers.
-  const accountMetas = getAccountMetasWithSigners(
-    accounts,
-    'programId',
-    programAddress
-  );
-
-  const instruction = getCreateInstructionRaw(
-    accountMetas as Record<keyof AccountMetas, IAccountMeta>,
-    programAddress
-  );
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const instruction = {
+    accounts: [
+      getAccountMeta(accounts.counter),
+      getAccountMeta(accounts.authority),
+      getAccountMeta(accounts.payer),
+      getAccountMeta(accounts.systemProgram),
+    ],
+    programAddress,
+    data: getCreateInstructionDataEncoder().encode({}),
+  } as CreateInstruction<
+    typeof COUNTER_PROGRAM_ADDRESS,
+    TAccountCounter,
+    TAccountAuthority,
+    TAccountPayer,
+    TAccountSystemProgram
+  >;
 
   return Object.freeze({ ...instruction, byteDelta });
 }
 
 export type CreateInput<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TAccountPayer extends string,
-  TAccountSystemProgram extends string,
-> = {
-  /** The program derived address of the counter account to create (seeds: ['counter', authority]) */
-  counter: Address<TAccountCounter>;
-  /** The authority of the counter */
-  authority: Address<TAccountAuthority>;
-  /** The account paying for the storage fees */
-  payer?: Address<TAccountPayer>;
-  /** The system program */
-  systemProgram?: Address<TAccountSystemProgram>;
-};
-
-export type CreateInputWithSigners<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TAccountPayer extends string,
-  TAccountSystemProgram extends string,
+  TAccountCounter extends string = string,
+  TAccountAuthority extends string = string,
+  TAccountPayer extends string = string,
+  TAccountSystemProgram extends string = string,
 > = {
   /** The program derived address of the counter account to create (seeds: ['counter', authority]) */
   counter: Address<TAccountCounter>;
@@ -312,28 +212,6 @@ export function getCreateInstruction<
   TAccountAuthority extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
->(
-  input: CreateInputWithSigners<
-    TAccountCounter,
-    TAccountAuthority,
-    TAccountPayer,
-    TAccountSystemProgram
-  >
-): CreateInstructionWithSigners<
-  TProgram,
-  TAccountCounter,
-  TAccountAuthority,
-  TAccountPayer,
-  TAccountSystemProgram
-> &
-  IInstructionWithByteDelta;
-export function getCreateInstruction<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TAccountPayer extends string,
-  TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
 >(
   input: CreateInput<
     TAccountCounter,
@@ -342,47 +220,27 @@ export function getCreateInstruction<
     TAccountSystemProgram
   >
 ): CreateInstruction<
-  TProgram,
+  typeof COUNTER_PROGRAM_ADDRESS,
   TAccountCounter,
   TAccountAuthority,
   TAccountPayer,
   TAccountSystemProgram
 > &
-  IInstructionWithByteDelta;
-export function getCreateInstruction<
-  TAccountCounter extends string,
-  TAccountAuthority extends string,
-  TAccountPayer extends string,
-  TAccountSystemProgram extends string,
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
->(
-  input: CreateInput<
-    TAccountCounter,
-    TAccountAuthority,
-    TAccountPayer,
-    TAccountSystemProgram
-  >
-): IInstruction & IInstructionWithByteDelta {
+  IInstructionWithByteDelta {
   // Program address.
-  const programAddress =
-    'CounterProgram111111111111111111111111111111' as Address<'CounterProgram111111111111111111111111111111'>;
+  const programAddress = COUNTER_PROGRAM_ADDRESS;
 
   // Original accounts.
-  type AccountMetas = Parameters<
-    typeof getCreateInstructionRaw<
-      TProgram,
-      TAccountCounter,
-      TAccountAuthority,
-      TAccountPayer,
-      TAccountSystemProgram
-    >
-  >[0];
-  const accounts: Record<keyof AccountMetas, ResolvedAccount> = {
+  const originalAccounts = {
     counter: { value: input.counter ?? null, isWritable: true },
     authority: { value: input.authority ?? null, isWritable: false },
     payer: { value: input.payer ?? null, isWritable: true },
     systemProgram: { value: input.systemProgram ?? null, isWritable: false },
   };
+  const accounts = originalAccounts as Record<
+    keyof typeof originalAccounts,
+    ResolvedAccount
+  >;
 
   // Resolve default values.
   if (!accounts.payer.value) {
@@ -399,74 +257,29 @@ export function getCreateInstruction<
     0
   );
 
-  // Get account metas and signers.
-  const accountMetas = getAccountMetasWithSigners(
-    accounts,
-    'programId',
-    programAddress
-  );
-
-  const instruction = getCreateInstructionRaw(
-    accountMetas as Record<keyof AccountMetas, IAccountMeta>,
-    programAddress
-  );
+  const getAccountMeta = getAccountMetaFactory(programAddress, 'programId');
+  const instruction = {
+    accounts: [
+      getAccountMeta(accounts.counter),
+      getAccountMeta(accounts.authority),
+      getAccountMeta(accounts.payer),
+      getAccountMeta(accounts.systemProgram),
+    ],
+    programAddress,
+    data: getCreateInstructionDataEncoder().encode({}),
+  } as CreateInstruction<
+    typeof COUNTER_PROGRAM_ADDRESS,
+    TAccountCounter,
+    TAccountAuthority,
+    TAccountPayer,
+    TAccountSystemProgram
+  >;
 
   return Object.freeze({ ...instruction, byteDelta });
 }
 
-export function getCreateInstructionRaw<
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
-  TAccountCounter extends string | IAccountMeta<string> = string,
-  TAccountAuthority extends string | IAccountMeta<string> = string,
-  TAccountPayer extends string | IAccountMeta<string> = string,
-  TAccountSystemProgram extends
-    | string
-    | IAccountMeta<string> = '11111111111111111111111111111111',
-  TRemainingAccounts extends Array<IAccountMeta<string>> = [],
->(
-  accounts: {
-    counter: TAccountCounter extends string
-      ? Address<TAccountCounter>
-      : TAccountCounter;
-    authority: TAccountAuthority extends string
-      ? Address<TAccountAuthority>
-      : TAccountAuthority;
-    payer: TAccountPayer extends string
-      ? Address<TAccountPayer>
-      : TAccountPayer;
-    systemProgram?: TAccountSystemProgram extends string
-      ? Address<TAccountSystemProgram>
-      : TAccountSystemProgram;
-  },
-  programAddress: Address<TProgram> = 'CounterProgram111111111111111111111111111111' as Address<TProgram>,
-  remainingAccounts?: TRemainingAccounts
-) {
-  return {
-    accounts: [
-      accountMetaWithDefault(accounts.counter, AccountRole.WRITABLE),
-      accountMetaWithDefault(accounts.authority, AccountRole.READONLY_SIGNER),
-      accountMetaWithDefault(accounts.payer, AccountRole.WRITABLE_SIGNER),
-      accountMetaWithDefault(
-        accounts.systemProgram ??
-          ('11111111111111111111111111111111' as Address<'11111111111111111111111111111111'>),
-        AccountRole.READONLY
-      ),
-      ...(remainingAccounts ?? []),
-    ],
-    data: getCreateInstructionDataEncoder().encode({}),
-    programAddress,
-  } as CreateInstruction<
-    TProgram,
-    TAccountCounter,
-    TAccountAuthority,
-    TAccountPayer,
-    TAccountSystemProgram,
-    TRemainingAccounts
-  >;
-}
-
 export type ParsedCreateInstruction<
-  TProgram extends string = 'CounterProgram111111111111111111111111111111',
+  TProgram extends string = typeof COUNTER_PROGRAM_ADDRESS,
   TAccountMetas extends readonly IAccountMeta[] = readonly IAccountMeta[],
 > = {
   programAddress: Address<TProgram>;
