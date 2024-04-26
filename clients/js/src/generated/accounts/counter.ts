@@ -8,56 +8,38 @@
 
 import {
   Account,
+  Address,
+  Codec,
+  Decoder,
   EncodedAccount,
+  Encoder,
   FetchAccountConfig,
   FetchAccountsConfig,
   MaybeAccount,
   MaybeEncodedAccount,
   assertAccountExists,
   assertAccountsExist,
+  combineCodec,
   decodeAccount,
   fetchEncodedAccount,
   fetchEncodedAccounts,
-} from '@solana/accounts';
-import {
-  Address,
   getAddressDecoder,
   getAddressEncoder,
-} from '@solana/addresses';
-import {
-  Codec,
-  Decoder,
-  Encoder,
-  combineCodec,
   getStructDecoder,
   getStructEncoder,
   getU32Decoder,
   getU32Encoder,
-  mapEncoder,
-} from '@solana/codecs';
+  transformEncoder,
+} from '@solana/web3.js';
 import { CounterSeeds, findCounterPda } from '../pdas';
 import { Key, getKeyDecoder, getKeyEncoder } from '../types';
 
-export type Counter<TAddress extends string = string> = Account<
-  CounterAccountData,
-  TAddress
->;
+export type Counter = { key: Key; authority: Address; value: number };
 
-export type MaybeCounter<TAddress extends string = string> = MaybeAccount<
-  CounterAccountData,
-  TAddress
->;
+export type CounterArgs = { authority: Address; value: number };
 
-export type CounterAccountData = {
-  key: Key;
-  authority: Address;
-  value: number;
-};
-
-export type CounterAccountDataArgs = { authority: Address; value: number };
-
-export function getCounterAccountDataEncoder(): Encoder<CounterAccountDataArgs> {
-  return mapEncoder(
+export function getCounterEncoder(): Encoder<CounterArgs> {
+  return transformEncoder(
     getStructEncoder([
       ['key', getKeyEncoder()],
       ['authority', getAddressEncoder()],
@@ -67,7 +49,7 @@ export function getCounterAccountDataEncoder(): Encoder<CounterAccountDataArgs> 
   );
 }
 
-export function getCounterAccountDataDecoder(): Decoder<CounterAccountData> {
+export function getCounterDecoder(): Decoder<Counter> {
   return getStructDecoder([
     ['key', getKeyDecoder()],
     ['authority', getAddressDecoder()],
@@ -75,28 +57,22 @@ export function getCounterAccountDataDecoder(): Decoder<CounterAccountData> {
   ]);
 }
 
-export function getCounterAccountDataCodec(): Codec<
-  CounterAccountDataArgs,
-  CounterAccountData
-> {
-  return combineCodec(
-    getCounterAccountDataEncoder(),
-    getCounterAccountDataDecoder()
-  );
+export function getCounterCodec(): Codec<CounterArgs, Counter> {
+  return combineCodec(getCounterEncoder(), getCounterDecoder());
 }
 
 export function decodeCounter<TAddress extends string = string>(
   encodedAccount: EncodedAccount<TAddress>
-): Counter<TAddress>;
+): Account<Counter, TAddress>;
 export function decodeCounter<TAddress extends string = string>(
   encodedAccount: MaybeEncodedAccount<TAddress>
-): MaybeCounter<TAddress>;
+): MaybeAccount<Counter, TAddress>;
 export function decodeCounter<TAddress extends string = string>(
   encodedAccount: EncodedAccount<TAddress> | MaybeEncodedAccount<TAddress>
-): Counter<TAddress> | MaybeCounter<TAddress> {
+): Account<Counter, TAddress> | MaybeAccount<Counter, TAddress> {
   return decodeAccount(
     encodedAccount as MaybeEncodedAccount<TAddress>,
-    getCounterAccountDataDecoder()
+    getCounterDecoder()
   );
 }
 
@@ -104,7 +80,7 @@ export async function fetchCounter<TAddress extends string = string>(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
   config?: FetchAccountConfig
-): Promise<Counter<TAddress>> {
+): Promise<Account<Counter, TAddress>> {
   const maybeAccount = await fetchMaybeCounter(rpc, address, config);
   assertAccountExists(maybeAccount);
   return maybeAccount;
@@ -114,7 +90,7 @@ export async function fetchMaybeCounter<TAddress extends string = string>(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   address: Address<TAddress>,
   config?: FetchAccountConfig
-): Promise<MaybeCounter<TAddress>> {
+): Promise<MaybeAccount<Counter, TAddress>> {
   const maybeAccount = await fetchEncodedAccount(rpc, address, config);
   return decodeCounter(maybeAccount);
 }
@@ -123,7 +99,7 @@ export async function fetchAllCounter(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
   config?: FetchAccountsConfig
-): Promise<Counter[]> {
+): Promise<Account<Counter>[]> {
   const maybeAccounts = await fetchAllMaybeCounter(rpc, addresses, config);
   assertAccountsExist(maybeAccounts);
   return maybeAccounts;
@@ -133,7 +109,7 @@ export async function fetchAllMaybeCounter(
   rpc: Parameters<typeof fetchEncodedAccounts>[0],
   addresses: Array<Address>,
   config?: FetchAccountsConfig
-): Promise<MaybeCounter[]> {
+): Promise<MaybeAccount<Counter>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) => decodeCounter(maybeAccount));
 }
@@ -146,7 +122,7 @@ export async function fetchCounterFromSeeds(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   seeds: CounterSeeds,
   config: FetchAccountConfig & { programAddress?: Address } = {}
-): Promise<Counter> {
+): Promise<Account<Counter>> {
   const maybeAccount = await fetchMaybeCounterFromSeeds(rpc, seeds, config);
   assertAccountExists(maybeAccount);
   return maybeAccount;
@@ -156,8 +132,8 @@ export async function fetchMaybeCounterFromSeeds(
   rpc: Parameters<typeof fetchEncodedAccount>[0],
   seeds: CounterSeeds,
   config: FetchAccountConfig & { programAddress?: Address } = {}
-): Promise<MaybeCounter> {
+): Promise<MaybeAccount<Counter>> {
   const { programAddress, ...fetchConfig } = config;
   const [address] = await findCounterPda(seeds, { programAddress });
-  return fetchMaybeCounter(rpc, address, fetchConfig);
+  return await fetchMaybeCounter(rpc, address, fetchConfig);
 }

@@ -6,30 +6,29 @@
  * @see https://github.com/metaplex-foundation/kinobi
  */
 
-import { BASE_ACCOUNT_SIZE } from '@solana/accounts';
-import { Address } from '@solana/addresses';
 import {
+  Address,
+  BASE_ACCOUNT_SIZE,
   Codec,
   Decoder,
   Encoder,
-  combineCodec,
-  getStructDecoder,
-  getStructEncoder,
-  getU8Decoder,
-  getU8Encoder,
-  mapEncoder,
-} from '@solana/codecs';
-import {
   IAccountMeta,
+  IAccountSignerMeta,
   IInstruction,
   IInstructionWithAccounts,
   IInstructionWithData,
   ReadonlyAccount,
   ReadonlySignerAccount,
+  TransactionSigner,
   WritableAccount,
   WritableSignerAccount,
-} from '@solana/instructions';
-import { IAccountSignerMeta, TransactionSigner } from '@solana/signers';
+  combineCodec,
+  getStructDecoder,
+  getStructEncoder,
+  getU8Decoder,
+  getU8Encoder,
+  transformEncoder,
+} from '@solana/web3.js';
 import { getCounterSize } from '../accounts';
 import { findCounterPda } from '../pdas';
 import { COUNTER_PROGRAM_ADDRESS } from '../programs';
@@ -77,7 +76,7 @@ export type CreateInstructionData = { discriminator: number };
 export type CreateInstructionDataArgs = {};
 
 export function getCreateInstructionDataEncoder(): Encoder<CreateInstructionDataArgs> {
-  return mapEncoder(
+  return transformEncoder(
     getStructEncoder([['discriminator', getU8Encoder()]]),
     (value) => ({ ...value, discriminator: 0 })
   );

@@ -52,12 +52,12 @@ impl Increment {
 }
 
 #[derive(BorshDeserialize, BorshSerialize)]
-struct IncrementInstructionData {
+pub struct IncrementInstructionData {
     discriminator: u8,
 }
 
 impl IncrementInstructionData {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self { discriminator: 1 }
     }
 }
@@ -74,7 +74,7 @@ pub struct IncrementInstructionArgs {
 ///
 ///   0. `[writable]` counter
 ///   1. `[signer]` authority
-#[derive(Default)]
+#[derive(Clone, Debug, Default)]
 pub struct IncrementBuilder {
     counter: Option<solana_program::pubkey::Pubkey>,
     authority: Option<solana_program::pubkey::Pubkey>,
@@ -249,6 +249,7 @@ impl<'a, 'b> IncrementCpi<'a, 'b> {
 ///
 ///   0. `[writable]` counter
 ///   1. `[signer]` authority
+#[derive(Clone, Debug)]
 pub struct IncrementCpiBuilder<'a, 'b> {
     instruction: Box<IncrementCpiBuilderInstruction<'a, 'b>>,
 }
@@ -347,6 +348,7 @@ impl<'a, 'b> IncrementCpiBuilder<'a, 'b> {
     }
 }
 
+#[derive(Clone, Debug)]
 struct IncrementCpiBuilderInstruction<'a, 'b> {
     __program: &'b solana_program::account_info::AccountInfo<'a>,
     counter: Option<&'b solana_program::account_info::AccountInfo<'a>>,

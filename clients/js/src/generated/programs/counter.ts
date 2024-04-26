@@ -6,37 +6,15 @@
  * @see https://github.com/metaplex-foundation/kinobi
  */
 
-import { Address } from '@solana/addresses';
-import { getU8Encoder } from '@solana/codecs';
-import { Program, ProgramWithErrors } from '@solana/programs';
-import {
-  CounterProgramError,
-  CounterProgramErrorCode,
-  getCounterProgramErrorFromCode,
-} from '../errors';
+import { Address, containsBytes, getU8Encoder } from '@solana/web3.js';
 import {
   ParsedCreateInstruction,
   ParsedIncrementInstruction,
 } from '../instructions';
-import { memcmp } from '../shared';
 import { Key, getKeyEncoder } from '../types';
 
 export const COUNTER_PROGRAM_ADDRESS =
   'CounterProgram111111111111111111111111111111' as Address<'CounterProgram111111111111111111111111111111'>;
-
-export type CounterProgram =
-  Program<'CounterProgram111111111111111111111111111111'> &
-    ProgramWithErrors<CounterProgramErrorCode, CounterProgramError>;
-
-export function getCounterProgram(): CounterProgram {
-  return {
-    name: 'counter',
-    address: COUNTER_PROGRAM_ADDRESS,
-    getErrorFromCode(code: CounterProgramErrorCode, cause?: Error) {
-      return getCounterProgramErrorFromCode(code, cause);
-    },
-  };
-}
 
 export enum CounterAccount {
   Counter,
@@ -46,7 +24,7 @@ export function identifyCounterAccount(
   account: { data: Uint8Array } | Uint8Array
 ): CounterAccount {
   const data = account instanceof Uint8Array ? account : account.data;
-  if (memcmp(data, getKeyEncoder().encode(Key.Counter), 0)) {
+  if (containsBytes(data, getKeyEncoder().encode(Key.Counter), 0)) {
     return CounterAccount.Counter;
   }
   throw new Error(
@@ -64,10 +42,10 @@ export function identifyCounterInstruction(
 ): CounterInstruction {
   const data =
     instruction instanceof Uint8Array ? instruction : instruction.data;
-  if (memcmp(data, getU8Encoder().encode(0), 0)) {
+  if (containsBytes(data, getU8Encoder().encode(0), 0)) {
     return CounterInstruction.Create;
   }
-  if (memcmp(data, getU8Encoder().encode(1), 0)) {
+  if (containsBytes(data, getU8Encoder().encode(1), 0)) {
     return CounterInstruction.Increment;
   }
   throw new Error(

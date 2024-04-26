@@ -6,123 +6,63 @@
  * @see https://github.com/metaplex-foundation/kinobi
  */
 
-export const enum CounterProgramErrorCode {
-  /** DeserializationError: Error deserializing an account */
-  DESERIALIZATION_ERROR = 0x0, // 0
-  /** SerializationError: Error serializing an account */
-  SERIALIZATION_ERROR = 0x1, // 1
-  /** InvalidProgramOwner: Invalid program owner. This likely mean the provided account does not exist */
-  INVALID_PROGRAM_OWNER = 0x2, // 2
-  /** InvalidPda: Invalid PDA derivation */
-  INVALID_PDA = 0x3, // 3
-  /** ExpectedEmptyAccount: Expected empty account */
-  EXPECTED_EMPTY_ACCOUNT = 0x4, // 4
-  /** ExpectedNonEmptyAccount: Expected non empty account */
-  EXPECTED_NON_EMPTY_ACCOUNT = 0x5, // 5
-  /** ExpectedSignerAccount: Expected signer account */
-  EXPECTED_SIGNER_ACCOUNT = 0x6, // 6
-  /** ExpectedWritableAccount: Expected writable account */
-  EXPECTED_WRITABLE_ACCOUNT = 0x7, // 7
-  /** AccountMismatch: Account mismatch */
-  ACCOUNT_MISMATCH = 0x8, // 8
-  /** InvalidAccountKey: Invalid account key */
-  INVALID_ACCOUNT_KEY = 0x9, // 9
-  /** NumericalOverflow: Numerical overflow */
-  NUMERICAL_OVERFLOW = 0xa, // 10
-}
+/** DeserializationError: Error deserializing an account */
+export const COUNTER_ERROR__DESERIALIZATION_ERROR = 0x0; // 0
+/** SerializationError: Error serializing an account */
+export const COUNTER_ERROR__SERIALIZATION_ERROR = 0x1; // 1
+/** InvalidProgramOwner: Invalid program owner. This likely mean the provided account does not exist */
+export const COUNTER_ERROR__INVALID_PROGRAM_OWNER = 0x2; // 2
+/** InvalidPda: Invalid PDA derivation */
+export const COUNTER_ERROR__INVALID_PDA = 0x3; // 3
+/** ExpectedEmptyAccount: Expected empty account */
+export const COUNTER_ERROR__EXPECTED_EMPTY_ACCOUNT = 0x4; // 4
+/** ExpectedNonEmptyAccount: Expected non empty account */
+export const COUNTER_ERROR__EXPECTED_NON_EMPTY_ACCOUNT = 0x5; // 5
+/** ExpectedSignerAccount: Expected signer account */
+export const COUNTER_ERROR__EXPECTED_SIGNER_ACCOUNT = 0x6; // 6
+/** ExpectedWritableAccount: Expected writable account */
+export const COUNTER_ERROR__EXPECTED_WRITABLE_ACCOUNT = 0x7; // 7
+/** AccountMismatch: Account mismatch */
+export const COUNTER_ERROR__ACCOUNT_MISMATCH = 0x8; // 8
+/** InvalidAccountKey: Invalid account key */
+export const COUNTER_ERROR__INVALID_ACCOUNT_KEY = 0x9; // 9
+/** NumericalOverflow: Numerical overflow */
+export const COUNTER_ERROR__NUMERICAL_OVERFLOW = 0xa; // 10
 
-export class CounterProgramError extends Error {
-  override readonly name = 'CounterProgramError';
+export type CounterError =
+  | typeof COUNTER_ERROR__ACCOUNT_MISMATCH
+  | typeof COUNTER_ERROR__DESERIALIZATION_ERROR
+  | typeof COUNTER_ERROR__EXPECTED_EMPTY_ACCOUNT
+  | typeof COUNTER_ERROR__EXPECTED_NON_EMPTY_ACCOUNT
+  | typeof COUNTER_ERROR__EXPECTED_SIGNER_ACCOUNT
+  | typeof COUNTER_ERROR__EXPECTED_WRITABLE_ACCOUNT
+  | typeof COUNTER_ERROR__INVALID_ACCOUNT_KEY
+  | typeof COUNTER_ERROR__INVALID_PDA
+  | typeof COUNTER_ERROR__INVALID_PROGRAM_OWNER
+  | typeof COUNTER_ERROR__NUMERICAL_OVERFLOW
+  | typeof COUNTER_ERROR__SERIALIZATION_ERROR;
 
-  readonly code: CounterProgramErrorCode;
-
-  readonly cause: Error | undefined;
-
-  constructor(
-    code: CounterProgramErrorCode,
-    name: string,
-    message: string,
-    cause?: Error
-  ) {
-    super(`${name} (${code}): ${message}`);
-    this.code = code;
-    this.cause = cause;
-  }
-}
-
-let counterProgramErrorCodeMap:
-  | Record<CounterProgramErrorCode, [string, string]>
-  | undefined;
+let counterErrorMessages: Record<CounterError, string> | undefined;
 if (__DEV__) {
-  counterProgramErrorCodeMap = {
-    [CounterProgramErrorCode.DESERIALIZATION_ERROR]: [
-      'DeserializationError',
-      `Error deserializing an account`,
-    ],
-    [CounterProgramErrorCode.SERIALIZATION_ERROR]: [
-      'SerializationError',
-      `Error serializing an account`,
-    ],
-    [CounterProgramErrorCode.INVALID_PROGRAM_OWNER]: [
-      'InvalidProgramOwner',
-      `Invalid program owner. This likely mean the provided account does not exist`,
-    ],
-    [CounterProgramErrorCode.INVALID_PDA]: [
-      'InvalidPda',
-      `Invalid PDA derivation`,
-    ],
-    [CounterProgramErrorCode.EXPECTED_EMPTY_ACCOUNT]: [
-      'ExpectedEmptyAccount',
-      `Expected empty account`,
-    ],
-    [CounterProgramErrorCode.EXPECTED_NON_EMPTY_ACCOUNT]: [
-      'ExpectedNonEmptyAccount',
-      `Expected non empty account`,
-    ],
-    [CounterProgramErrorCode.EXPECTED_SIGNER_ACCOUNT]: [
-      'ExpectedSignerAccount',
-      `Expected signer account`,
-    ],
-    [CounterProgramErrorCode.EXPECTED_WRITABLE_ACCOUNT]: [
-      'ExpectedWritableAccount',
-      `Expected writable account`,
-    ],
-    [CounterProgramErrorCode.ACCOUNT_MISMATCH]: [
-      'AccountMismatch',
-      `Account mismatch`,
-    ],
-    [CounterProgramErrorCode.INVALID_ACCOUNT_KEY]: [
-      'InvalidAccountKey',
-      `Invalid account key`,
-    ],
-    [CounterProgramErrorCode.NUMERICAL_OVERFLOW]: [
-      'NumericalOverflow',
-      `Numerical overflow`,
-    ],
+  counterErrorMessages = {
+    [COUNTER_ERROR__ACCOUNT_MISMATCH]: `Account mismatch`,
+    [COUNTER_ERROR__DESERIALIZATION_ERROR]: `Error deserializing an account`,
+    [COUNTER_ERROR__EXPECTED_EMPTY_ACCOUNT]: `Expected empty account`,
+    [COUNTER_ERROR__EXPECTED_NON_EMPTY_ACCOUNT]: `Expected non empty account`,
+    [COUNTER_ERROR__EXPECTED_SIGNER_ACCOUNT]: `Expected signer account`,
+    [COUNTER_ERROR__EXPECTED_WRITABLE_ACCOUNT]: `Expected writable account`,
+    [COUNTER_ERROR__INVALID_ACCOUNT_KEY]: `Invalid account key`,
+    [COUNTER_ERROR__INVALID_PDA]: `Invalid PDA derivation`,
+    [COUNTER_ERROR__INVALID_PROGRAM_OWNER]: `Invalid program owner. This likely mean the provided account does not exist`,
+    [COUNTER_ERROR__NUMERICAL_OVERFLOW]: `Numerical overflow`,
+    [COUNTER_ERROR__SERIALIZATION_ERROR]: `Error serializing an account`,
   };
 }
 
-export function getCounterProgramErrorFromCode(
-  code: CounterProgramErrorCode,
-  cause?: Error
-): CounterProgramError {
+export function getCounterErrorMessage(code: CounterError): string {
   if (__DEV__) {
-    return new CounterProgramError(
-      code,
-      ...(
-        counterProgramErrorCodeMap as Record<
-          CounterProgramErrorCode,
-          [string, string]
-        >
-      )[code],
-      cause
-    );
+    return (counterErrorMessages as Record<CounterError, string>)[code];
   }
 
-  return new CounterProgramError(
-    code,
-    'Unknown',
-    'Error message not available in production bundles. Compile with __DEV__ set to true to see more information.',
-    cause
-  );
+  return 'Error message not available in production bundles. Compile with `__DEV__` set to true to see more information.';
 }

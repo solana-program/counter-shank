@@ -6,13 +6,21 @@
  * @see https://github.com/metaplex-foundation/kinobi
  */
 
-import { Address } from '@solana/addresses';
 import {
+  Address,
   Codec,
   Decoder,
   Encoder,
+  IAccountMeta,
+  IAccountSignerMeta,
+  IInstruction,
+  IInstructionWithAccounts,
+  IInstructionWithData,
   Option,
   OptionOrNullable,
+  ReadonlySignerAccount,
+  TransactionSigner,
+  WritableAccount,
   combineCodec,
   getOptionDecoder,
   getOptionEncoder,
@@ -22,18 +30,9 @@ import {
   getU32Encoder,
   getU8Decoder,
   getU8Encoder,
-  mapEncoder,
   none,
-} from '@solana/codecs';
-import {
-  IAccountMeta,
-  IInstruction,
-  IInstructionWithAccounts,
-  IInstructionWithData,
-  ReadonlySignerAccount,
-  WritableAccount,
-} from '@solana/instructions';
-import { IAccountSignerMeta, TransactionSigner } from '@solana/signers';
+  transformEncoder,
+} from '@solana/web3.js';
 import { findCounterPda } from '../pdas';
 import { COUNTER_PROGRAM_ADDRESS } from '../programs';
 import {
@@ -72,7 +71,7 @@ export type IncrementInstructionDataArgs = {
 };
 
 export function getIncrementInstructionDataEncoder(): Encoder<IncrementInstructionDataArgs> {
-  return mapEncoder(
+  return transformEncoder(
     getStructEncoder([
       ['discriminator', getU8Encoder()],
       ['amount', getOptionEncoder(getU32Encoder())],

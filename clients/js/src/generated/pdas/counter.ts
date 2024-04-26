@@ -11,8 +11,8 @@ import {
   ProgramDerivedAddress,
   getAddressEncoder,
   getProgramDerivedAddress,
-} from '@solana/addresses';
-import { getStringEncoder } from '@solana/codecs';
+  getUtf8Encoder,
+} from '@solana/web3.js';
 
 export type CounterSeeds = {
   /** The authority of the counter account */
@@ -26,10 +26,10 @@ export async function findCounterPda(
   const {
     programAddress = 'CounterProgram111111111111111111111111111111' as Address<'CounterProgram111111111111111111111111111111'>,
   } = config;
-  return getProgramDerivedAddress({
+  return await getProgramDerivedAddress({
     programAddress,
     seeds: [
-      getStringEncoder({ size: 'variable' }).encode('counter'),
+      getUtf8Encoder().encode('counter'),
       getAddressEncoder().encode(seeds.authority),
     ],
   });
