@@ -10,7 +10,7 @@ devDependencies:
     version: 2.2.5
   '@metaplex-foundation/kinobi':
     specifier: ^0.19.0
-    version: 0.19.0(fastestsmallesttextencoderdecoder@1.0.22)
+    version: 0.19.2(fastestsmallesttextencoderdecoder@1.0.22)
   '@metaplex-foundation/shank-js':
     specifier: ^0.1.7
     version: 0.1.7
@@ -27,8 +27,8 @@ packages:
     resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
     dev: true
 
-  /@metaplex-foundation/kinobi@0.19.0(fastestsmallesttextencoderdecoder@1.0.22):
-    resolution: {integrity: sha512-BbL/4V8ea18J9N89nx4hlvp9ZgLFUfPaV9ZQkxhaTT0ORTo+Ksf74ZgJPF35CMqS6x132OvLjWHN8I+LMAKLBQ==}
+  /@metaplex-foundation/kinobi@0.19.2(fastestsmallesttextencoderdecoder@1.0.22):
+    resolution: {integrity: sha512-qj3Q2kHUM5K+6IugUZ3gNJ4H22AfCuoh/WcJOmi1tpMcnZacMX+JkOVLaPmGQT17r1KG5Q50COH/2BfFMUh+6A==}
     dependencies:
       '@noble/hashes': 1.4.0
       '@prettier/sync': 0.5.2(prettier@3.2.5)
@@ -693,8 +693,8 @@ packages:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: true
 
-  /yaml@2.4.1:
-    resolution: {integrity: sha512-pIXzoImaqmfOrL7teGUBt/T7ZDnyeGBWyXQBvOVhLkWLN37GXv8NMLK406UY6dS51JfcQHsmcW5cJ441bHg6Lg==}
+  /yaml@2.4.2:
+    resolution: {integrity: sha512-B3VqDZ+JAg1nZpaEmWtTXUlBneoGx6CPM9b0TENK6aoSu5t73dItudwdgmi6tHlIZZId4dZ9skcAQ2UbcyAeVA==}
     engines: {node: '>= 14'}
     hasBin: true
     dev: true
@@ -718,5 +718,5 @@ packages:
       ps-tree: 1.2.0
       webpod: 0.0.2
       which: 3.0.1
-      yaml: 2.4.1
+      yaml: 2.4.2
     dev: true
