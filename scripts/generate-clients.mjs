@@ -1,11 +1,14 @@
 #!/usr/bin/env zx
 import "zx/globals";
-import * as k from "@metaplex-foundation/kinobi";
+import * as k from "kinobi";
+import { rootNodeFromAnchor } from "@kinobi-so/nodes-from-anchor";
+import { renderVisitor as renderJavaScriptVisitor } from "@kinobi-so/renderers-js";
+import { renderVisitor as renderRustVisitor } from "@kinobi-so/renderers-rust";
 import { getAllProgramIdls } from "./utils.mjs";
 
 // Instanciate Kinobi.
-const [idl, ...additionalIdls] = getAllProgramIdls();
-const kinobi = k.createFromIdl(idl, additionalIdls);
+const [idl, ...additionalIdls] = getAllProgramIdls().map(idl => rootNodeFromAnchor(require(idl)))
+const kinobi = k.createFromRoot(idl, additionalIdls);
 
 // Update programs.
 kinobi.update(
@@ -62,16 +65,15 @@ kinobi.update(
 // Render JavaScript.
 const jsClient = path.join(__dirname, "..", "clients", "js");
 kinobi.accept(
-  k.renderJavaScriptExperimentalVisitor(
-    path.join(jsClient, "src", "generated"),
-    { prettier: require(path.join(jsClient, ".prettierrc.json")) }
-  )
+  renderJavaScriptVisitor(path.join(jsClient, "src", "generated"), { 
+    prettier: require(path.join(jsClient, ".prettierrc.json"))
+  })
 );
 
 // Render Rust.
 const rustClient = path.join(__dirname, "..", "clients", "rust");
 kinobi.accept(
-  k.renderRustVisitor(path.join(rustClient, "src", "generated"), {
+  renderRustVisitor(path.join(rustClient, "src", "generated"), {
     formatCode: true,
     crateFolder: rustClient,
   })
