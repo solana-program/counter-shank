@@ -7,16 +7,6 @@
  */
 
 import {
-  Account,
-  Address,
-  Codec,
-  Decoder,
-  EncodedAccount,
-  Encoder,
-  FetchAccountConfig,
-  FetchAccountsConfig,
-  MaybeAccount,
-  MaybeEncodedAccount,
   assertAccountExists,
   assertAccountsExist,
   combineCodec,
@@ -30,6 +20,16 @@ import {
   getU32Decoder,
   getU32Encoder,
   transformEncoder,
+  type Account,
+  type Address,
+  type Codec,
+  type Decoder,
+  type EncodedAccount,
+  type Encoder,
+  type FetchAccountConfig,
+  type FetchAccountsConfig,
+  type MaybeAccount,
+  type MaybeEncodedAccount,
 } from '@solana/web3.js';
 import { CounterSeeds, findCounterPda } from '../pdas';
 import { Key, getKeyDecoder, getKeyEncoder } from '../types';

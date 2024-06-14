@@ -7,37 +7,37 @@
  */
 
 import {
-  Address,
   BASE_ACCOUNT_SIZE,
-  Codec,
-  Decoder,
-  Encoder,
-  IAccountMeta,
-  IAccountSignerMeta,
-  IInstruction,
-  IInstructionWithAccounts,
-  IInstructionWithData,
-  ReadonlyAccount,
-  ReadonlySignerAccount,
-  TransactionSigner,
-  WritableAccount,
-  WritableSignerAccount,
   combineCodec,
   getStructDecoder,
   getStructEncoder,
   getU8Decoder,
   getU8Encoder,
   transformEncoder,
+  type Address,
+  type Codec,
+  type Decoder,
+  type Encoder,
+  type IAccountMeta,
+  type IAccountSignerMeta,
+  type IInstruction,
+  type IInstructionWithAccounts,
+  type IInstructionWithData,
+  type ReadonlyAccount,
+  type ReadonlySignerAccount,
+  type TransactionSigner,
+  type WritableAccount,
+  type WritableSignerAccount,
 } from '@solana/web3.js';
 import { getCounterSize } from '../accounts';
 import { findCounterPda } from '../pdas';
 import { COUNTER_PROGRAM_ADDRESS } from '../programs';
 import {
-  IInstructionWithByteDelta,
-  ResolvedAccount,
   expectAddress,
   expectSome,
   getAccountMetaFactory,
+  type IInstructionWithByteDelta,
+  type ResolvedAccount,
 } from '../shared';
 
 export type CreateInstruction<

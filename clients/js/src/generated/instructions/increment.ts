@@ -7,20 +7,6 @@
  */
 
 import {
-  Address,
-  Codec,
-  Decoder,
-  Encoder,
-  IAccountMeta,
-  IAccountSignerMeta,
-  IInstruction,
-  IInstructionWithAccounts,
-  IInstructionWithData,
-  Option,
-  OptionOrNullable,
-  ReadonlySignerAccount,
-  TransactionSigner,
-  WritableAccount,
   combineCodec,
   getOptionDecoder,
   getOptionEncoder,
@@ -32,13 +18,27 @@ import {
   getU8Encoder,
   none,
   transformEncoder,
+  type Address,
+  type Codec,
+  type Decoder,
+  type Encoder,
+  type IAccountMeta,
+  type IAccountSignerMeta,
+  type IInstruction,
+  type IInstructionWithAccounts,
+  type IInstructionWithData,
+  type Option,
+  type OptionOrNullable,
+  type ReadonlySignerAccount,
+  type TransactionSigner,
+  type WritableAccount,
 } from '@solana/web3.js';
 import { findCounterPda } from '../pdas';
 import { COUNTER_PROGRAM_ADDRESS } from '../programs';
 import {
-  ResolvedAccount,
   expectAddress,
   getAccountMetaFactory,
+  type ResolvedAccount,
 } from '../shared';
 
 export type IncrementInstruction<

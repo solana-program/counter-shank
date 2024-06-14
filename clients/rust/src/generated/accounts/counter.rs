@@ -67,3 +67,28 @@ impl<'a> TryFrom<&solana_program::account_info::AccountInfo<'a>> for Counter {
         Self::deserialize(&mut data)
     }
 }
+
+#[cfg(feature = "anchor")]
+impl anchor_lang::AccountDeserialize for Counter {
+    fn try_deserialize_unchecked(buf: &mut &[u8]) -> anchor_lang::Result<Self> {
+        Ok(Self::deserialize(buf)?)
+    }
+}
+
+#[cfg(feature = "anchor")]
+impl anchor_lang::AccountSerialize for Counter {}
+
+#[cfg(feature = "anchor")]
+impl anchor_lang::Owner for Counter {
+    fn owner() -> Pubkey {
+        crate::COUNTER_ID
+    }
+}
+
+#[cfg(feature = "anchor-idl-build")]
+impl anchor_lang::IdlBuild for Counter {}
+
+#[cfg(feature = "anchor-idl-build")]
+impl anchor_lang::Discriminator for Counter {
+    const DISCRIMINATOR: [u8; 8] = [0; 8];
+}
