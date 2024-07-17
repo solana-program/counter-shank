@@ -43,7 +43,7 @@ export type CounterError =
   | typeof COUNTER_ERROR__SERIALIZATION_ERROR;
 
 let counterErrorMessages: Record<CounterError, string> | undefined;
-if (__DEV__) {
+if (process.env.NODE_ENV !== 'production') {
   counterErrorMessages = {
     [COUNTER_ERROR__ACCOUNT_MISMATCH]: `Account mismatch`,
     [COUNTER_ERROR__DESERIALIZATION_ERROR]: `Error deserializing an account`,
@@ -60,9 +60,9 @@ if (__DEV__) {
 }
 
 export function getCounterErrorMessage(code: CounterError): string {
-  if (__DEV__) {
+  if (process.env.NODE_ENV !== 'production') {
     return (counterErrorMessages as Record<CounterError, string>)[code];
   }
 
-  return 'Error message not available in production bundles. Compile with `__DEV__` set to true to see more information.';
+  return 'Error message not available in production bundles.';
 }
