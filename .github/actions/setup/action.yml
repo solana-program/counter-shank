@@ -16,9 +16,6 @@ inputs:
   node:
     description: The Node.js version to install. Required.
     required: true
-  protoc:
-    description: Install protoc (workaround) if `true`. Defaults to `false`.
-    required: false
   rustfmt:
     description: Install Rustfmt if `true`. Defaults to `false`.
     required: false
@@ -46,8 +43,8 @@ runs:
       shell: bash
       run: pnpm zx ./scripts/ci/set-env.mjs
 
-    - name: (Temporary Workaround) Install Protobuf Compiler
-      if: ${{ inputs.protoc == 'true' }}
+    - name: Install Protobuf Compiler (Temporary Workaround for Solana 2.0)
+      if: ${{ inputs.solana || inputs.rustfmt == 'true' || inputs.clippy == 'true' }}
       shell: bash
       run: |
         sudo apt-get update

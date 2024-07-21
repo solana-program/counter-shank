@@ -24,7 +24,6 @@ jobs:
           clippy: true
           node: ${{ env.NODE_VERSION }}
           rustfmt: true
-          protoc: true
 
       - name: Format Programs
         run: pnpm programs:format
@@ -63,7 +62,6 @@ jobs:
           clippy: true
           node: ${{ env.NODE_VERSION }}
           rustfmt: true
-          protoc: true
 
       - name: Format Client Rust
         run: pnpm clients:rust:format
@@ -83,7 +81,6 @@ jobs:
         uses: ./.github/actions/setup
         with:
           cargo-cache-key: cargo-programs
-          protoc: true
           node: ${{ env.NODE_VERSION }}
           solana: ${{ env.SOLANA_VERSION }}
 
@@ -116,7 +113,6 @@ jobs:
         with:
           cargo-cache-key: cargo-program-tests
           cargo-cache-fallback-key: cargo-programs
-          protoc: true
           node: ${{ env.NODE_VERSION }}
           solana: ${{ env.SOLANA_VERSION }}
 
@@ -179,7 +175,6 @@ jobs:
       - name: Setup Environment
         uses: ./.github/actions/setup
         with:
-          protoc: true
           node: ${{ env.NODE_VERSION }}
           solana: ${{ env.SOLANA_VERSION }}
 
@@ -204,7 +199,6 @@ jobs:
         uses: ./.github/actions/setup
         with:
           cargo-cache-key: cargo-rust-client
-          protoc: true
           node: ${{ env.NODE_VERSION }}
           solana: ${{ env.SOLANA_VERSION }}
 
