@@ -21,9 +21,9 @@ await Promise.all(
     const manifestPath = path.join(workingDirectory, folder, 'Cargo.toml');
 
     if (fix) {
-      await $`cargo ${toolchain} clippy --manifest-path ${manifestPath} --fix ${clippyArgs}`;
+      await $`cargo ${toolchain} clippy --manifest-path ${manifestPath} --fix ${lintArgs}`;
     } else {
-      await $`cargo ${toolchain} clippy --manifest-path ${manifestPath} ${clippyArgs}`;
+      await $`cargo ${toolchain} clippy --manifest-path ${manifestPath} ${lintArgs}`;
     }
   })
 );
