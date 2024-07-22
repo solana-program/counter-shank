@@ -85,7 +85,7 @@ export function getCargoMetadata(folder) {
 }
 
 export function getToolchain(operation) {
-  return getCargoMetadata()?.toolchain?.[operation];
+  return getCargoMetadata()?.toolchains?.[operation];
 }
 
 export function getToolchainArgument(operation) {
@@ -103,4 +103,11 @@ export function popArgument(args, arg) {
     args.splice(index, 1);
   }
   return index >= 0;
+}
+
+export function partitionArguments(args, delimiter) {
+  const index = args.indexOf(delimiter);
+  return index >= 0
+    ? [args.slice(0, index), args.slice(index + 1)]
+    : [args, []];
 }
