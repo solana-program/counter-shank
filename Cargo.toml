@@ -2,6 +2,8 @@
 resolver = "2"
 members = ["clients/rust", "program"]
 
-[workspace.metadata.toolchain]
-lint = "1.75.0"
+# Specify Rust toolchains for rustfmt, clippy, and build.
+# Any unprovided toolchains default to stable.
+[workspace.metadata.toolchains]
 format = "1.75.0"
+lint = "1.75.0"
