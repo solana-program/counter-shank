@@ -6,6 +6,14 @@
  * @see https://github.com/kinobi-so/kinobi
  */
 
+import {
+  isProgramError,
+  type Address,
+  type SOLANA_ERROR__INSTRUCTION_ERROR__CUSTOM,
+  type SolanaError,
+} from '@solana/web3.js';
+import { COUNTER_PROGRAM_ADDRESS } from '../programs';
+
 /** DeserializationError: Error deserializing an account */
 export const COUNTER_ERROR__DESERIALIZATION_ERROR = 0x0; // 0
 /** SerializationError: Error serializing an account */
@@ -65,4 +73,20 @@ export function getCounterErrorMessage(code: CounterError): string {
   }
 
   return 'Error message not available in production bundles.';
+}
+
+export function isCounterError<TProgramErrorCode extends CounterError>(
+  error: unknown,
+  transactionMessage: {
+    instructions: Record<number, { programAddress: Address }>;
+  },
+  code?: TProgramErrorCode
+): error is SolanaError<typeof SOLANA_ERROR__INSTRUCTION_ERROR__CUSTOM> &
+  Readonly<{ context: Readonly<{ code: TProgramErrorCode }> }> {
+  return isProgramError<TProgramErrorCode>(
+    error,
+    transactionMessage,
+    COUNTER_PROGRAM_ADDRESS,
+    code
+  );
 }

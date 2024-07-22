@@ -7,13 +7,15 @@ import { renderVisitor as renderRustVisitor } from '@kinobi-so/renderers-rust';
 import { getAllProgramIdls } from './utils.mjs';
 
 // Instanciate Kinobi.
-const [idl, ...additionalIdls] = getAllProgramIdls().map(idl => rootNodeFromAnchor(require(idl)))
+const [idl, ...additionalIdls] = getAllProgramIdls().map((idl) =>
+  rootNodeFromAnchor(require(idl))
+);
 const kinobi = k.createFromRoot(idl, additionalIdls);
 
 // Update programs.
 kinobi.update(
   k.updateProgramsVisitor({
-    'solanaProgramCounter': { name: 'counter' },
+    solanaProgramCounter: { name: 'counter' },
   })
 );
 
@@ -65,8 +67,8 @@ kinobi.update(
 // Render JavaScript.
 const jsClient = path.join(__dirname, '..', 'clients', 'js');
 kinobi.accept(
-  renderJavaScriptVisitor(path.join(jsClient, 'src', 'generated'), { 
-    prettierOptions: require(path.join(jsClient, '.prettierrc.json'))
+  renderJavaScriptVisitor(path.join(jsClient, 'src', 'generated'), {
+    prettierOptions: require(path.join(jsClient, '.prettierrc.json')),
   })
 );
 
