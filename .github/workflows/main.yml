@@ -8,7 +8,7 @@ on:
 
 env:
   NODE_VERSION: 18
-  SOLANA_VERSION: 1.18.12
+  SOLANA_VERSION: 1.18.18
 
 jobs:
   format_and_lint_programs:

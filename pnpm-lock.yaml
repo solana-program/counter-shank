@@ -16,10 +16,10 @@ importers:
         version: 0.20.9
       '@kinobi-so/renderers-js':
         specifier: ^0.21.0
-        version: 0.21.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.3)
+        version: 0.21.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)
       '@kinobi-so/renderers-rust':
         specifier: ^0.21.0
-        version: 0.21.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.3)
+        version: 0.21.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)
       '@metaplex-foundation/shank-js':
         specifier: ^0.1.7
         version: 0.1.7
@@ -28,7 +28,7 @@ importers:
         version: 0.21.0
       typescript:
         specifier: ^5.5.2
-        version: 5.5.3
+        version: 5.5.4
       zx:
         specifier: ^7.2.3
         version: 7.2.3
@@ -402,8 +402,8 @@ packages:
   toml@3.0.0:
     resolution: {integrity: sha512-y/mWCZinnvxjTKYhJ+pYxwD0mRLVvOtdS2Awbgxln6iEnt4rk0yBxeSBHkGJcPucRiG0e55mwWp+g/05rsrd6w==}
 
-  typescript@5.5.3:
-    resolution: {integrity: sha512-/hreyEujaB0w76zKo6717l3L0o/qEUtRgdvUBvlkhoWeOVMjMuHNHk0BRBzikzuGDqNmPQbg5ifMEqsHLiIUcQ==}
+  typescript@5.5.4:
+    resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -467,14 +467,14 @@ snapshots:
       '@kinobi-so/nodes': 0.21.0
       '@kinobi-so/visitors-core': 0.21.0
 
-  '@kinobi-so/renderers-js@0.21.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.3)':
+  '@kinobi-so/renderers-js@0.21.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)':
     dependencies:
       '@kinobi-so/errors': 0.21.0
       '@kinobi-so/nodes': 0.21.0
       '@kinobi-so/nodes-from-anchor': 0.20.9
       '@kinobi-so/renderers-core': 0.20.7
       '@kinobi-so/visitors-core': 0.21.0
-      '@solana/codecs-strings': 2.0.0-preview.4(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.3)
+      '@solana/codecs-strings': 2.0.0-preview.4(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)
       nunjucks: 3.2.4
       prettier: 3.3.3
     transitivePeerDependencies:
@@ -482,13 +482,13 @@ snapshots:
       - fastestsmallesttextencoderdecoder
       - typescript
 
-  '@kinobi-so/renderers-rust@0.21.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.3)':
+  '@kinobi-so/renderers-rust@0.21.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)':
     dependencies:
       '@kinobi-so/errors': 0.21.0
       '@kinobi-so/nodes': 0.21.0
       '@kinobi-so/renderers-core': 0.20.7
       '@kinobi-so/visitors-core': 0.21.0
-      '@solana/codecs-strings': 2.0.0-preview.4(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.3)
+      '@solana/codecs-strings': 2.0.0-preview.4(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)
       nunjucks: 3.2.4
     transitivePeerDependencies:
       - chokidar
@@ -544,30 +544,30 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
-  '@solana/codecs-core@2.0.0-preview.4(typescript@5.5.3)':
+  '@solana/codecs-core@2.0.0-preview.4(typescript@5.5.4)':
     dependencies:
-      '@solana/errors': 2.0.0-preview.4(typescript@5.5.3)
-      typescript: 5.5.3
+      '@solana/errors': 2.0.0-preview.4(typescript@5.5.4)
+      typescript: 5.5.4
 
-  '@solana/codecs-numbers@2.0.0-preview.4(typescript@5.5.3)':
+  '@solana/codecs-numbers@2.0.0-preview.4(typescript@5.5.4)':
     dependencies:
-      '@solana/codecs-core': 2.0.0-preview.4(typescript@5.5.3)
-      '@solana/errors': 2.0.0-preview.4(typescript@5.5.3)
-      typescript: 5.5.3
+      '@solana/codecs-core': 2.0.0-preview.4(typescript@5.5.4)
+      '@solana/errors': 2.0.0-preview.4(typescript@5.5.4)
+      typescript: 5.5.4
 
-  '@solana/codecs-strings@2.0.0-preview.4(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.3)':
+  '@solana/codecs-strings@2.0.0-preview.4(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)':
     dependencies:
-      '@solana/codecs-core': 2.0.0-preview.4(typescript@5.5.3)
-      '@solana/codecs-numbers': 2.0.0-preview.4(typescript@5.5.3)
-      '@solana/errors': 2.0.0-preview.4(typescript@5.5.3)
+      '@solana/codecs-core': 2.0.0-preview.4(typescript@5.5.4)
+      '@solana/codecs-numbers': 2.0.0-preview.4(typescript@5.5.4)
+      '@solana/errors': 2.0.0-preview.4(typescript@5.5.4)
       fastestsmallesttextencoderdecoder: 1.0.22
-      typescript: 5.5.3
+      typescript: 5.5.4
 
-  '@solana/errors@2.0.0-preview.4(typescript@5.5.3)':
+  '@solana/errors@2.0.0-preview.4(typescript@5.5.4)':
     dependencies:
       chalk: 5.3.0
       commander: 12.1.0
-      typescript: 5.5.3
+      typescript: 5.5.4
 
   '@types/fs-extra@11.0.4':
     dependencies:
@@ -841,7 +841,7 @@ snapshots:
 
   toml@3.0.0: {}
 
-  typescript@5.5.3: {}
+  typescript@5.5.4: {}
 
   undici-types@5.26.5: {}
 
