@@ -15,8 +15,8 @@ importers:
         specifier: ^0.20.9
         version: 0.20.9
       '@kinobi-so/renderers-js':
-        specifier: ^0.21.0
-        version: 0.21.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)
+        specifier: ^0.21.2
+        version: 0.21.2(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)
       '@kinobi-so/renderers-rust':
         specifier: ^0.21.0
         version: 0.21.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)
@@ -54,8 +54,8 @@ packages:
   '@kinobi-so/renderers-core@0.20.7':
     resolution: {integrity: sha512-KJhU8+UMowO9dDkLhEodAkbRkgSxdfBWeY+DIgOCgXcakt0T140K7OREuaAo9fp12Owf+10SAEGx9AzTNySoHA==}
 
-  '@kinobi-so/renderers-js@0.21.1':
-    resolution: {integrity: sha512-qJGalIl2lTO0Y2chjotCTqcLEAbgfAEijROGp6VTdeOGt07SITw5O28xqZc40MDEssToGTUkOm3QvxLd0z2JRg==}
+  '@kinobi-so/renderers-js@0.21.2':
+    resolution: {integrity: sha512-G576GAQ10ugmA63EZRlEbv892th37q9ow+AMzZD1vtypRCEJ7znakzySSDG3aeqaZujk2igKXFQTD+FHuY/xPg==}
 
   '@kinobi-so/renderers-rust@0.21.0':
     resolution: {integrity: sha512-BLe1SW6XFBhjtZdCc7cuukMWrJTbhCafCCmXryLmjzF7jaiK9nyZZFinHxljSac4HCk2vDn22mHAwOjabaDQ2Q==}
@@ -122,8 +122,8 @@ packages:
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
 
-  '@types/node@18.19.41':
-    resolution: {integrity: sha512-LX84pRJ+evD2e2nrgYCHObGWkiQJ1mL+meAgbvnwk/US6vmMY7S2ygBTGV2Jw91s9vUsLSXeDEkUHZIJGLrhsg==}
+  '@types/node@18.19.42':
+    resolution: {integrity: sha512-d2ZFc/3lnK2YCYhos8iaNIYu9Vfhr92nHiyJHRltXWjXUBjEE+A4I58Tdbnw4VhggSW+2j5y5gTrLs4biNnubg==}
 
   '@types/ps-tree@1.1.6':
     resolution: {integrity: sha512-PtrlVaOaI44/3pl3cvnlK+GxOM3re2526TJvPvh7W+keHIXdV4TE0ylpPBAcvFQCbGitaTXwL9u+RF7qtVeazQ==}
@@ -427,8 +427,8 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
 
-  yaml@2.4.5:
-    resolution: {integrity: sha512-aBx2bnqDzVOyNKfsysjA2ms5ZlnjSAW2eG3/L5G/CSujfjLJTJsEw1bGw8kCf04KodQWk1pxlGnZ56CRxiawmg==}
+  yaml@2.5.0:
+    resolution: {integrity: sha512-2wWLbGbYDiSqqIKoPjar3MPgB94ErzCtrNE1FdqGuaO0pi2JGjmE8aW8TDZwzU7vuxcGRdL/4gPQwQ7hD5AMSw==}
     engines: {node: '>= 14'}
     hasBin: true
 
@@ -467,7 +467,7 @@ snapshots:
       '@kinobi-so/nodes': 0.21.0
       '@kinobi-so/visitors-core': 0.21.0
 
-  '@kinobi-so/renderers-js@0.21.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)':
+  '@kinobi-so/renderers-js@0.21.2(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.5.4)':
     dependencies:
       '@kinobi-so/errors': 0.21.0
       '@kinobi-so/nodes': 0.21.0
@@ -572,15 +572,15 @@ snapshots:
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
-      '@types/node': 18.19.41
+      '@types/node': 18.19.42
 
   '@types/jsonfile@6.1.4':
     dependencies:
-      '@types/node': 18.19.41
+      '@types/node': 18.19.42
 
   '@types/minimist@1.2.5': {}
 
-  '@types/node@18.19.41':
+  '@types/node@18.19.42':
     dependencies:
       undici-types: 5.26.5
 
@@ -855,13 +855,13 @@ snapshots:
     dependencies:
       isexe: 2.0.0
 
-  yaml@2.4.5: {}
+  yaml@2.5.0: {}
 
   zx@7.2.3:
     dependencies:
       '@types/fs-extra': 11.0.4
       '@types/minimist': 1.2.5
-      '@types/node': 18.19.41
+      '@types/node': 18.19.42
       '@types/ps-tree': 1.1.6
       '@types/which': 3.0.4
       chalk: 5.3.0
@@ -873,4 +873,4 @@ snapshots:
       ps-tree: 1.2.0
       webpod: 0.0.2
       which: 3.0.1
-      yaml: 2.4.5
+      yaml: 2.5.0

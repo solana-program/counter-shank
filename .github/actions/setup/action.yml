@@ -13,14 +13,11 @@ inputs:
   clippy:
     description: Install Clippy if `true`. Defaults to `false`.
     required: false
-  node:
-    description: The Node.js version to install. Required.
-    required: true
   rustfmt:
     description: Install Rustfmt if `true`. Defaults to `false`.
     required: false
   solana:
-    description: The Solana version to install. Skips if not provided.
+    description: Install Solana if `true`. Defaults to `false`.
     required: false
 
 runs:
@@ -32,7 +29,7 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ inputs.node }}
+        node-version: 18
         cache: 'pnpm'
 
     - name: Install Dependencies
@@ -42,7 +39,6 @@ runs:
     - name: Set Environment Variables
       shell: bash
       run: pnpm zx ./scripts/ci/set-env.mjs
-
 
     - name: Install Rustfmt
       if: ${{ inputs.rustfmt == 'true' }}
@@ -59,12 +55,11 @@ runs:
         components: clippy
 
     - name: Install Solana
-      if: ${{ inputs.solana }}
+      if: ${{ inputs.solana == 'true' }}
       uses: metaplex-foundation/actions/install-solana@v1
       with:
-        version: ${{ inputs.solana }}
+        version: ${{ env.SOLANA_VERSION }}
         cache: true
-
 
     - name: Cache Cargo Dependencies
       if: ${{ inputs.cargo-cache-key && !inputs.cargo-cache-fallback-key }}
