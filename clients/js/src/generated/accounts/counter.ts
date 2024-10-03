@@ -34,6 +34,12 @@ import {
 import { CounterSeeds, findCounterPda } from '../pdas';
 import { Key, getKeyDecoder, getKeyEncoder } from '../types';
 
+export const COUNTER_KEY = Key.Counter;
+
+export function getCounterKeyBytes() {
+  return getKeyEncoder().encode(COUNTER_KEY);
+}
+
 export type Counter = { key: Key; authority: Address; value: number };
 
 export type CounterArgs = { authority: Address; value: number };
@@ -45,7 +51,7 @@ export function getCounterEncoder(): Encoder<CounterArgs> {
       ['authority', getAddressEncoder()],
       ['value', getU32Encoder()],
     ]),
-    (value) => ({ ...value, key: Key.Counter })
+    (value) => ({ ...value, key: COUNTER_KEY })
   );
 }
 

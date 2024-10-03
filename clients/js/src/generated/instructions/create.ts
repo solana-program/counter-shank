@@ -40,6 +40,12 @@ import {
   type ResolvedAccount,
 } from '../shared';
 
+export const CREATE_DISCRIMINATOR = 0;
+
+export function getCreateDiscriminatorBytes() {
+  return getU8Encoder().encode(CREATE_DISCRIMINATOR);
+}
+
 export type CreateInstruction<
   TProgram extends string = typeof COUNTER_PROGRAM_ADDRESS,
   TAccountCounter extends string | IAccountMeta<string> = string,
@@ -78,7 +84,7 @@ export type CreateInstructionDataArgs = {};
 export function getCreateInstructionDataEncoder(): Encoder<CreateInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([['discriminator', getU8Encoder()]]),
-    (value) => ({ ...value, discriminator: 0 })
+    (value) => ({ ...value, discriminator: CREATE_DISCRIMINATOR })
   );
 }
 
@@ -117,16 +123,18 @@ export async function getCreateInstructionAsync<
   TAccountAuthority extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
+  TProgramAddress extends Address = typeof COUNTER_PROGRAM_ADDRESS,
 >(
   input: CreateAsyncInput<
     TAccountCounter,
     TAccountAuthority,
     TAccountPayer,
     TAccountSystemProgram
-  >
+  >,
+  config?: { programAddress?: TProgramAddress }
 ): Promise<
   CreateInstruction<
-    typeof COUNTER_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountCounter,
     TAccountAuthority,
     TAccountPayer,
@@ -135,7 +143,7 @@ export async function getCreateInstructionAsync<
     IInstructionWithByteDelta
 > {
   // Program address.
-  const programAddress = COUNTER_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? COUNTER_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -180,7 +188,7 @@ export async function getCreateInstructionAsync<
     programAddress,
     data: getCreateInstructionDataEncoder().encode({}),
   } as CreateInstruction<
-    typeof COUNTER_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountCounter,
     TAccountAuthority,
     TAccountPayer,
@@ -211,15 +219,17 @@ export function getCreateInstruction<
   TAccountAuthority extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
+  TProgramAddress extends Address = typeof COUNTER_PROGRAM_ADDRESS,
 >(
   input: CreateInput<
     TAccountCounter,
     TAccountAuthority,
     TAccountPayer,
     TAccountSystemProgram
-  >
+  >,
+  config?: { programAddress?: TProgramAddress }
 ): CreateInstruction<
-  typeof COUNTER_PROGRAM_ADDRESS,
+  TProgramAddress,
   TAccountCounter,
   TAccountAuthority,
   TAccountPayer,
@@ -227,7 +237,7 @@ export function getCreateInstruction<
 > &
   IInstructionWithByteDelta {
   // Program address.
-  const programAddress = COUNTER_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? COUNTER_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -267,7 +277,7 @@ export function getCreateInstruction<
     programAddress,
     data: getCreateInstructionDataEncoder().encode({}),
   } as CreateInstruction<
-    typeof COUNTER_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountCounter,
     TAccountAuthority,
     TAccountPayer,

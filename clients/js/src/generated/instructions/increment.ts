@@ -41,6 +41,12 @@ import {
   type ResolvedAccount,
 } from '../shared';
 
+export const INCREMENT_DISCRIMINATOR = 1;
+
+export function getIncrementDiscriminatorBytes() {
+  return getU8Encoder().encode(INCREMENT_DISCRIMINATOR);
+}
+
 export type IncrementInstruction<
   TProgram extends string = typeof COUNTER_PROGRAM_ADDRESS,
   TAccountCounter extends string | IAccountMeta<string> = string,
@@ -76,7 +82,11 @@ export function getIncrementInstructionDataEncoder(): Encoder<IncrementInstructi
       ['discriminator', getU8Encoder()],
       ['amount', getOptionEncoder(getU32Encoder())],
     ]),
-    (value) => ({ ...value, discriminator: 1, amount: value.amount ?? none() })
+    (value) => ({
+      ...value,
+      discriminator: INCREMENT_DISCRIMINATOR,
+      amount: value.amount ?? none(),
+    })
   );
 }
 
@@ -111,17 +121,15 @@ export type IncrementAsyncInput<
 export async function getIncrementInstructionAsync<
   TAccountCounter extends string,
   TAccountAuthority extends string,
+  TProgramAddress extends Address = typeof COUNTER_PROGRAM_ADDRESS,
 >(
-  input: IncrementAsyncInput<TAccountCounter, TAccountAuthority>
+  input: IncrementAsyncInput<TAccountCounter, TAccountAuthority>,
+  config?: { programAddress?: TProgramAddress }
 ): Promise<
-  IncrementInstruction<
-    typeof COUNTER_PROGRAM_ADDRESS,
-    TAccountCounter,
-    TAccountAuthority
-  >
+  IncrementInstruction<TProgramAddress, TAccountCounter, TAccountAuthority>
 > {
   // Program address.
-  const programAddress = COUNTER_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? COUNTER_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -154,7 +162,7 @@ export async function getIncrementInstructionAsync<
       args as IncrementInstructionDataArgs
     ),
   } as IncrementInstruction<
-    typeof COUNTER_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountCounter,
     TAccountAuthority
   >;
@@ -176,15 +184,13 @@ export type IncrementInput<
 export function getIncrementInstruction<
   TAccountCounter extends string,
   TAccountAuthority extends string,
+  TProgramAddress extends Address = typeof COUNTER_PROGRAM_ADDRESS,
 >(
-  input: IncrementInput<TAccountCounter, TAccountAuthority>
-): IncrementInstruction<
-  typeof COUNTER_PROGRAM_ADDRESS,
-  TAccountCounter,
-  TAccountAuthority
-> {
+  input: IncrementInput<TAccountCounter, TAccountAuthority>,
+  config?: { programAddress?: TProgramAddress }
+): IncrementInstruction<TProgramAddress, TAccountCounter, TAccountAuthority> {
   // Program address.
-  const programAddress = COUNTER_PROGRAM_ADDRESS;
+  const programAddress = config?.programAddress ?? COUNTER_PROGRAM_ADDRESS;
 
   // Original accounts.
   const originalAccounts = {
@@ -210,7 +216,7 @@ export function getIncrementInstruction<
       args as IncrementInstructionDataArgs
     ),
   } as IncrementInstruction<
-    typeof COUNTER_PROGRAM_ADDRESS,
+    TProgramAddress,
     TAccountCounter,
     TAccountAuthority
   >;
