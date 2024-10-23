@@ -13,10 +13,10 @@ importers:
         version: 1.0.0
       '@codama/renderers-js':
         specifier: ^1.0.0
-        version: 1.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
+        version: 1.0.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@codama/renderers-rust':
         specifier: ^1.0.0
-        version: 1.0.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
+        version: 1.0.3(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)
       '@iarna/toml':
         specifier: ^2.2.5
         version: 2.2.5
@@ -51,11 +51,11 @@ packages:
   '@codama/renderers-core@1.0.0':
     resolution: {integrity: sha512-WYvOylIzcR0WOc7GlUvGi5ym8IwmslwyV8zfj7FR646bMqaROirFJc+naGEbZ1lMykOyxcackTKL0eDB7954Qw==}
 
-  '@codama/renderers-js@1.0.0':
-    resolution: {integrity: sha512-wi9eqrtLbTM49ELqKqxIgbTaf7xKMWT+HIqj6GN373G0OJnSKwUJPIXAGLO+RCls5DGjDuOE5svuThU0zBkfzA==}
+  '@codama/renderers-js@1.0.1':
+    resolution: {integrity: sha512-RwTJM5L4ZuKZ9TUdr1K5PODr7Ji0lsqcqQGXQ71Hg+ZHQ+F4jj3RPvoWHxYm5tYMuqRajQxqL/W49kxqEtc96w==}
 
-  '@codama/renderers-rust@1.0.1':
-    resolution: {integrity: sha512-O4M7XHAovUskq5rYvTIqQ/JBLJXiUpPaeb2r5TBH+3BSwcdV/zZLrecsPYdj47JeFgI8FECqNzXLdEI7wm3QtA==}
+  '@codama/renderers-rust@1.0.3':
+    resolution: {integrity: sha512-S2n+bq92q5YZ01Z+8klNNbvgVErKsJzUYWN0Y0rPymx2vwkHfTkeQHEOuckb/kzHJm9QGXrzkDtSDBy5EDS1Wg==}
 
   '@codama/validators@1.0.0':
     resolution: {integrity: sha512-jSfU5IrcGTvcqsJSBSzD3Ochig+hKKg2NKsT/vUfQ4jAw2cQrVUP5f4dMXyX779JYfHLHCwZnBYvgEdgi9gBZQ==}
@@ -122,8 +122,8 @@ packages:
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
 
-  '@types/node@18.19.55':
-    resolution: {integrity: sha512-zzw5Vw52205Zr/nmErSEkN5FLqXPuKX/k5d1D7RKHATGqU7y6YfX9QxZraUzUrFGqH6XzOzG196BC35ltJC4Cw==}
+  '@types/node@18.19.59':
+    resolution: {integrity: sha512-vizm2EqwV/7Zay+A6J3tGl9Lhr7CjZe2HmWS988sefiEmsyP9CeXEleho6i4hJk/8UtZAo0bWN4QPZZr83RxvQ==}
 
   '@types/ps-tree@1.1.6':
     resolution: {integrity: sha512-PtrlVaOaI44/3pl3cvnlK+GxOM3re2526TJvPvh7W+keHIXdV4TE0ylpPBAcvFQCbGitaTXwL9u+RF7qtVeazQ==}
@@ -427,8 +427,8 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
 
-  yaml@2.5.1:
-    resolution: {integrity: sha512-bLQOjaX/ADgQ20isPJRvF0iRUHIxVhYvr53Of7wGcWlO2jvtUlH5m87DsmulFVxRpNLOnI4tB6p/oh8D7kpn9Q==}
+  yaml@2.6.0:
+    resolution: {integrity: sha512-a6ae//JvKDEra2kdi1qzCyrJW/WZCgFi8ydDV+eXExl95t+5R+ijnqHJbz9tmMh8FUjx3iv2fCQ4dclAQlO2UQ==}
     engines: {node: '>= 14'}
     hasBin: true
 
@@ -465,7 +465,7 @@ snapshots:
       '@codama/nodes': 1.0.0
       '@codama/visitors-core': 1.0.0
 
-  '@codama/renderers-js@1.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)':
+  '@codama/renderers-js@1.0.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)':
     dependencies:
       '@codama/errors': 1.0.0
       '@codama/nodes': 1.0.0
@@ -480,7 +480,7 @@ snapshots:
       - fastestsmallesttextencoderdecoder
       - typescript
 
-  '@codama/renderers-rust@1.0.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)':
+  '@codama/renderers-rust@1.0.3(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.6.3)':
     dependencies:
       '@codama/errors': 1.0.0
       '@codama/nodes': 1.0.0
@@ -572,15 +572,15 @@ snapshots:
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
-      '@types/node': 18.19.55
+      '@types/node': 18.19.59
 
   '@types/jsonfile@6.1.4':
     dependencies:
-      '@types/node': 18.19.55
+      '@types/node': 18.19.59
 
   '@types/minimist@1.2.5': {}
 
-  '@types/node@18.19.55':
+  '@types/node@18.19.59':
     dependencies:
       undici-types: 5.26.5
 
@@ -855,13 +855,13 @@ snapshots:
     dependencies:
       isexe: 2.0.0
 
-  yaml@2.5.1: {}
+  yaml@2.6.0: {}
 
   zx@7.2.3:
     dependencies:
       '@types/fs-extra': 11.0.4
       '@types/minimist': 1.2.5
-      '@types/node': 18.19.55
+      '@types/node': 18.19.59
       '@types/ps-tree': 1.1.6
       '@types/which': 3.0.4
       chalk: 5.3.0
@@ -873,4 +873,4 @@ snapshots:
       ps-tree: 1.2.0
       webpod: 0.0.2
       which: 3.0.1
-      yaml: 2.5.1
+      yaml: 2.6.0
