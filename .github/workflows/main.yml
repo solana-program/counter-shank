@@ -85,10 +85,12 @@ jobs:
           path: ./target/deploy/*.so
           if-no-files-found: error
 
-      - name: Save Program Builds For Client Jobs
+      - name: Save Client Artifacts
         uses: actions/cache/save@v4
         with:
-          path: ./**/*.so
+          path: |
+            ./**/*.so
+            ./target/deploy/*.json
           key: ${{ runner.os }}-builds-${{ github.sha }}
 
   test_programs:
@@ -165,10 +167,12 @@ jobs:
         with:
           solana: true
 
-      - name: Restore Program Builds
+      - name: Restore Client Artifacts
         uses: actions/cache/restore@v4
         with:
-          path: ./**/*.so
+          path: |
+            ./**/*.so
+            ./target/deploy/*.json
           key: ${{ runner.os }}-builds-${{ github.sha }}
 
       - name: Test Client JS
